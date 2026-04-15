@@ -27,7 +27,14 @@
     --c6: #ff8f3f;
     --c7: #ff4fa3;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
     background: radial-gradient(circle at top, #171717 0%, #090909 55%, #050505 100%);
     position: relative;
@@ -39,6 +46,7 @@
     flex-direction: column;
     user-select: none;
   }
+
   body::before {
     content: "";
     position: fixed;
@@ -56,7 +64,10 @@
     mix-blend-mode: screen;
     opacity: 0.45;
   }
-  .hidden { display: none !important; }
+
+  .hidden {
+    display: none !important;
+  }
 
   #splash {
     position: fixed;
@@ -70,6 +81,7 @@
     z-index: 100;
     padding: 28px 22px;
   }
+
   #splash h1 {
     font-family: 'Anton', sans-serif;
     font-size: clamp(40px, 12vw, 74px);
@@ -79,7 +91,9 @@
     background: linear-gradient(135deg, #fff2c2 0%, var(--cursor) 45%, #ff6b57 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
+
   #splash p {
     color: var(--muted);
     font-size: 14px;
@@ -87,12 +101,14 @@
     max-width: 320px;
     line-height: 1.55;
   }
+
   .mode-picker {
     width: min(100%, 420px);
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
+
   .mode-card {
     background: linear-gradient(180deg, #232323 0%, #161616 100%);
     border: 1px solid var(--border);
@@ -103,22 +119,29 @@
     text-align: center;
     color: var(--text);
   }
-  .mode-card:active { transform: scale(0.98); }
+
+  .mode-card:active {
+    transform: scale(0.98);
+  }
+
   .mode-card.active {
     border-color: var(--cursor);
     box-shadow: 0 0 0 2px rgba(255,176,0,0.12), 0 0 24px rgba(255,176,0,0.12);
   }
+
   .mode-card .mode-title {
     font-family: 'Anton', sans-serif;
     font-size: 24px;
     letter-spacing: 1.5px;
   }
+
   .mode-card .mode-sub {
     color: var(--muted);
     font-size: 12px;
     line-height: 1.35;
     margin-top: 8px;
   }
+
   .bpm-control {
     display: flex;
     align-items: center;
@@ -129,6 +152,7 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.28);
     padding: 16px 28px;
   }
+
   .bpm-btn {
     background: none;
     border: none;
@@ -142,7 +166,11 @@
     justify-content: center;
     border-radius: 8px;
   }
-  .bpm-btn:active { background: var(--border); }
+
+  .bpm-btn:active {
+    background: var(--border);
+  }
+
   #bpm-display {
     font-family: 'Anton', sans-serif;
     font-size: 52px;
@@ -151,6 +179,7 @@
     text-align: center;
     line-height: 1;
   }
+
   .bpm-label {
     font-size: 13px;
     color: var(--muted);
@@ -158,6 +187,7 @@
     margin-top: -6px;
     letter-spacing: 2px;
   }
+
   #start-btn {
     background: linear-gradient(135deg, var(--cursor) 0%, #ff6b57 100%);
     color: #090909;
@@ -170,13 +200,17 @@
     cursor: pointer;
     box-shadow: 0 4px 24px rgba(255,176,0,0.26);
   }
-  #start-btn:active { transform: scale(0.97); }
+
+  #start-btn:active {
+    transform: scale(0.97);
+  }
 
   #game {
     display: none;
     flex-direction: column;
     height: 100dvh;
   }
+
   #hud {
     display: flex;
     align-items: center;
@@ -185,6 +219,7 @@
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
   }
+
   .hud-pill {
     background: linear-gradient(180deg, #232323 0%, #181818 100%);
     border: 1px solid var(--border);
@@ -197,7 +232,11 @@
     white-space: nowrap;
     line-height: 1;
   }
-  .hud-pill span { color: var(--cursor); }
+
+  .hud-pill span {
+    color: var(--cursor);
+  }
+
   #hud-main {
     flex: 1;
     text-align: right;
@@ -209,6 +248,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
   #view-wrap {
     flex: 1;
     min-height: 0;
@@ -217,17 +257,23 @@
     padding: 10px 10px 0;
   }
 
+  #rimes-view {
+    height: 100%;
+  }
+
   #grid {
     display: flex;
     flex-direction: column;
     gap: 7px;
   }
+
   .grid-row {
     display: grid;
     grid-template-columns: 28px 1fr 1fr 1fr 1fr;
     gap: 6px;
     align-items: center;
   }
+
   .row-num {
     font-family: 'Teko', sans-serif;
     font-size: 14px;
@@ -235,6 +281,7 @@
     text-align: right;
     padding-right: 2px;
   }
+
   .cell {
     border-radius: 10px;
     border: 1.5px solid var(--border);
@@ -253,12 +300,17 @@
     text-align: center;
     padding: 6px;
   }
-  .cell.has-word { color: var(--text); }
+
+  .cell.has-word {
+    color: var(--text);
+  }
+
   .cell.is-cursor {
     border-color: var(--cursor) !important;
     box-shadow: 0 0 0 2px var(--cursor-glow), 0 0 14px var(--cursor-glow);
     animation: pulse-cursor 0.9s ease-in-out infinite;
   }
+
   @keyframes pulse-cursor {
     0%, 100% { box-shadow: 0 0 0 2px var(--cursor-glow), 0 0 14px var(--cursor-glow); }
     50% { box-shadow: 0 0 0 4px var(--cursor-glow), 0 0 24px var(--cursor-glow); }
@@ -270,6 +322,7 @@
     flex-direction: column;
     gap: 12px;
   }
+
   .theme-card {
     border: 1px solid var(--border);
     border-radius: 16px;
@@ -277,6 +330,7 @@
     padding: 16px 14px 14px;
     box-shadow: 0 10px 24px rgba(0,0,0,0.22);
   }
+
   .theme-label {
     font-family: 'Teko', sans-serif;
     color: var(--muted);
@@ -284,6 +338,7 @@
     line-height: 1;
     letter-spacing: 1.2px;
   }
+
   .theme-value {
     margin-top: 8px;
     font-family: 'Anton', sans-serif;
@@ -294,12 +349,14 @@
     text-transform: uppercase;
     word-break: break-word;
   }
+
   #trigger-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
     flex: 1;
   }
+
   .trigger-card {
     border: 1.5px solid var(--border);
     border-radius: 14px;
@@ -311,11 +368,13 @@
     gap: 12px;
     transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
   }
+
   .trigger-card.active {
     border-color: var(--cursor);
     box-shadow: 0 0 0 2px rgba(255,176,0,0.12), 0 0 18px rgba(255,176,0,0.16);
     transform: translateY(-1px);
   }
+
   .trigger-index {
     width: 28px;
     flex-shrink: 0;
@@ -324,13 +383,18 @@
     color: var(--muted);
     text-align: center;
   }
-  .trigger-card.active .trigger-index { color: var(--cursor); }
+
+  .trigger-card.active .trigger-index {
+    color: var(--cursor);
+  }
+
   .trigger-text {
     font-size: 17px;
     line-height: 1.25;
     font-weight: 700;
     color: var(--text);
   }
+
   .trigger-hint {
     font-size: 12px;
     color: var(--muted);
@@ -345,6 +409,7 @@
     padding: 8px 10px 12px;
     border-top: 1px solid var(--border);
   }
+
   .ctrl-btn {
     background: linear-gradient(180deg, #232323 0%, #181818 100%);
     border: 1px solid var(--border);
@@ -363,18 +428,22 @@
     text-align: center;
     min-height: 64px;
   }
+
   .ctrl-btn:active {
     background: var(--border);
     transform: scale(0.97);
   }
+
   .ctrl-btn .icon {
     font-size: 18px;
     font-family: 'Anton', sans-serif;
   }
+
   .ctrl-btn.pause-active {
     border-color: var(--cursor);
     color: var(--cursor);
   }
+
   @media (max-width: 420px) {
     .cell { font-size: 13px; }
     .trigger-text { font-size: 15px; }
@@ -463,17 +532,120 @@
 </div>
 
 <script>
-// ====================== DONNÉES ======================
-const RHYME_GROUPS = [ /* ... ton tableau original inchangé ... */ ];
-const THEMES = [ /* ... ton tableau original inchangé ... */ ];
-const TRIGGERS = [ /* ... ton tableau original inchangé ... */ ];
+const RHYME_GROUPS = [
+  {syllables:1,key:"oi",words:["moi","toi","soi","voix","fois","choix"]},
+  {syllables:1,key:"ui",words:["nuit","bruit","pluie","fruit","lui","puits"]},
+  {syllables:1,key:"an",words:["temps","sens","dent","camp","champ","rang","sang","vent"]},
+  {syllables:1,key:"on",words:["non","bon","son","don","long","rond","ton","fond"]},
+  {syllables:1,key:"our",words:["jour","tour","cour","four","pour","court"]},
+  {syllables:1,key:"eur",words:["peur","cœur","sœur","heure","leur","meurs"]},
+  {syllables:2,key:"age",words:["courage","image","page","nage","plage","ouvrage","voyage","passage","visage","message","nuage","village"]},
+  {syllables:2,key:"aison",words:["maison","raison","saison","prison","poison","cloison","liaison","trahison"]},
+  {syllables:2,key:"ance",words:["chance","avance","danse","enfance","puissance","distance","naissance","errance","confiance","importance"]},
+  {syllables:2,key:"ence",words:["présence","absence","essence","patience","science","violence","silence","influence"]},
+  {syllables:2,key:"eau",words:["cadeau","rideau","niveau","réseau","bateau","gâteau","manteau","château","radeau","berceau"]},
+  {syllables:2,key:"our2",words:["amour","retour","détour","séjour","secours","discours","parcours","contour","toujours","velours"]},
+  {syllables:2,key:"eur2",words:["chaleur","douleur","couleur","lueur","saveur","valeur","bonheur","malheur","douceur","humeur"]},
+  {syllables:2,key:"esse",words:["jeunesse","tristesse","richesse","sagesse","faiblesse","promesse","largesse","tendresse"]},
+  {syllables:2,key:"oire",words:["histoire","victoire","mémoire","grimoire","déboire","notoire","espoir","bonsoir"]},
+  {syllables:2,key:"ique",words:["musique","logique","magique","pratique","physique","technique","classique","toxique"]},
+  {syllables:2,key:"able",words:["capable","coupable","durable","valable","notable","stable","aimable","portable"]},
+  {syllables:2,key:"une",words:["fortune","lacune","rancune","tribune","commune","chacune"]},
+  {syllables:2,key:"ine",words:["routine","cuisine","usine","machine","piscine","vitrine","colline","cousine"]},
+  {syllables:2,key:"ime",words:["rime","crime","victime","estime","abîme","régime","maxime","intime"]},
+  {syllables:2,key:"ace",words:["menace","audace","grimace","palace","rapace","tenace","surface","face","place","trace"]},
+  {syllables:2,key:"aire",words:["salaire","solaire","notaire","libraire","repaire","calvaire","affaire","primaire"]},
+  {syllables:2,key:"ière",words:["lumière","poussière","prière","manière","derrière","barrière","matière","rivière","frontière","carrière"]},
+  {syllables:2,key:"elle",words:["rebelle","querelle","ficelle","ruelle","nacelle","semelle","belle","nouvelle"]},
+  {syllables:2,key:"ête",words:["tempête","défaite","requête","comète","secrète","discrète","tête","fête","quête","bête"]},
+  {syllables:2,key:"ard",words:["regard","hasard","départ","retard","placard","brouillard","canard","pétard"]},
+  {syllables:2,key:"oir",words:["pouvoir","devoir","vouloir","savoir","revoir","miroir","trottoir","couloir"]},
+  {syllables:2,key:"ir",words:["finir","partir","dormir","sentir","choisir","grandir","sortir","mentir"]},
+  {syllables:2,key:"er",words:["parler","laisser","penser","changer","marcher","tomber","donner","trouver","rêver","aimer"]},
+  {syllables:2,key:"ole",words:["parole","boussole","console","symbole","école","auréole"]},
+  {syllables:2,key:"ité",words:["cité","idée","pitié","moitié","fierté","clarté","santé","bonté"]},
+  {syllables:2,key:"ant",words:["enfant","moment","vivant","présent","absent","courant","constant","distant"]},
+  {syllables:2,key:"ain",words:["matin","chemin","destin","copain","demain","humain","terrain","refrain"]},
+  {syllables:2,key:"al",words:["signal","final","banal","normal","journal","local","global","brutal"]},
+  {syllables:2,key:"ou",words:["partout","surtout","bijou","caillou","genou","debout","bout","coup"]},
+  {syllables:2,key:"as",words:["combat","débat","repas","fracas","tracas","éclat"]},
+  {syllables:2,key:"ote",words:["pilote","pote","note","faute","côte","anecdote","vote","capote"]},
+  {syllables:2,key:"ame",words:["flamme","âme","drame","femme","dame","lame","rame","blâme"]},
+  {syllables:2,key:"ise",words:["surprise","maîtrise","valise","crise","église","bêtise","prise","mise","brise","emprise"]},
+  {syllables:2,key:"onde",words:["monde","seconde","ronde","onde","profonde","fronde"]},
+  {syllables:2,key:"ombre",words:["ombre","sombre","nombre","membre","chambre","décembre"]},
+  {syllables:2,key:"agne",words:["montagne","campagne","compagne","Espagne","gagne","bagne"]},
+  {syllables:2,key:"ange",words:["mélange","échange","étrange","ange","orange","louange","frange","range"]},
+  {syllables:2,key:"ite",words:["limite","visite","élite","réussite","conduite","suite"]},
+  {syllables:2,key:"ouche",words:["bouche","couche","touche","douche","mouche","cartouche","souche","peluche"]},
+  {syllables:2,key:"aille",words:["bataille","médaille","faille","taille","travaille","détaille","muraille","canaille"]},
+  {syllables:2,key:"arme",words:["larme","arme","charme","alarme","désarme","vacarme"]},
+  {syllables:2,key:"oute",words:["route","doute","écoute","goutte","voûte","déroute"]},
+  {syllables:2,key:"eille",words:["oreille","veille","merveille","bouteille","abeille","réveil","soleil","conseil","sommeil","pareil"]},
+  {syllables:2,key:"igne",words:["ligne","signe","digne","consigne","désigne","vigne"]},
+  {syllables:2,key:"aine",words:["semaine","peine","haine","chaîne","reine","fontaine"]},
+  {syllables:2,key:"ippe",words:["équipe","principe","type","pipe","anticipe","participe"]},
+  {syllables:2,key:"oche",words:["proche","poche","roche","cloche","accroche","approche","reproche","coche"]},
+  {syllables:2,key:"ogue",words:["dialogue","prologue","monologue","catalogue","analogue","pédagogue"]},
+  {syllables:2,key:"os",words:["héros","repos","zéro","métro","numéro","bureau"]},
+  {syllables:2,key:"anche",words:["dimanche","manche","branche","planche","franche","tranche"]},
+  {syllables:2,key:"ure",words:["mesure","figure","nature","voiture","lecture","écriture","blessure","morsure","brisure","fissure"]},
+  {syllables:2,key:"ille",words:["ville","fille","brille","famille","bille","grille","quille"]},
+  {syllables:2,key:"ie",words:["vie","envie","partie","sortie","amie","folie"]},
+  {syllables:2,key:"ue",words:["rue","battue","venue","tenue","connue","inconnue","avenue","issue"]},
+  {syllables:2,key:"ume",words:["plume","volume","coutume","présume","allume","parfume","amertume"]},
+  {syllables:2,key:"dre",words:["prendre","comprendre","attendre","défendre","vendre","tendre","répandre","fendre"]},
+  {syllables:2,key:"ée",words:["idée","journée","année","matinée","soirée","destinée","équipée","dictée"]},
+  {syllables:2,key:"eux",words:["deux","feux","lieux","milieux","peux","veux","jeux","vœux","heureux","peureux"]},
+  {syllables:2,key:"asse",words:["classe","masse","tasse","glace","place","face","trace","passe"]},
+  {syllables:2,key:"ose",words:["chose","pose","repose","cause","pause","rose","close"]},
+  {syllables:2,key:"ouve",words:["trouve","prouve","éprouve","retrouve","approuve"]},
+  {syllables:2,key:"ire",words:["dire","rire","sourire","délire","empire","aspire","conspire","transpire"]},
+  {syllables:3,key:"venir",words:["avenir","souvenir","devenir","revenir","parvenir","prévenir","intervenir"]},
+  {syllables:3,key:"itude",words:["solitude","habitude","attitude","aptitude","certitude","gratitude","lassitude"]},
+  {syllables:3,key:"sion",words:["décision","précision","division","révision","collision","vision"]},
+  {syllables:3,key:"tion",words:["émotion","notion","potion","promotion","relation","création","nation","formation"]},
+  {syllables:3,key:"alité",words:["qualité","vérité","liberté","fierté","clarté","pureté"]},
+  {syllables:3,key:"ement",words:["mouvement","sentiment","jugement","battement","changement","classement","tourment"]},
+  {syllables:3,key:"onie",words:["harmonie","ironie","colonie","symphonie","agonie","insomnie"]},
+  {syllables:3,key:"ologie",words:["écologie","biologie","sociologie","psychologie","technologie","géologie"]},
+  {syllables:3,key:"able3",words:["admirable","agréable","raisonnable","véritable","redoutable","respectable"]}
+];
+
+const THEMES = [
+  "friendzone","Mbappé","mal du pays","coup de mou","coup de vieux","maman","colonisation",
+  "contrôle de police","DM laissé en vu","dîner de famille","soir d’échec","retour au quartier",
+  "vacances ratées","hôtel miteux","père absent","salle d’attente","rêve américain","dette morale",
+  "fierté mal placée","cousin jaloux","dernier train","solitude à deux","mensonge qui dure",
+  "envie de disparaître","nouvelle coupe ratée","grandir trop vite","loyer en retard","billet retour",
+  "panne d’inspi","ancienne école","soir de finale","mauvaise réputation","exil","banc de touche",
+  "pays qu’on idéalise","cicatrice qu’on cache","premier amour","appartement trop petit",
+  "ami devenu rival","rentrée de septembre","nuit d’insomnie","grosse embrouille","imposture",
+  "honte ancienne","succès trop tardif","drôle de silence","héritage lourd","quartier gentrifié"
+];
+
+const TRIGGERS = [
+  "J’ai compris trop tard que…","Le pire dans l’histoire c’est que…","Ils parlent de moi mais…",
+  "Si je tombe encore…","J’peux pas faire semblant de…","J’dis rien mais au fond…",
+  "Le plus drôle c’est que…","On m’a jamais dit que…","J’aurais dû voir que…",
+  "J’pensais gérer mais…","J’me reconnais plus quand…","Depuis ce jour-là…",
+  "C’est là que j’ai compris que…","J’le montre pas pourtant…","Le vrai problème c’est que…",
+  "J’fais le fier mais…","Quand j’y repense…","Si je dis la vérité…","Personne sait que…",
+  "Tout a changé quand…","J’me suis menti en disant que…","Même quand j’rigole…",
+  "Le silence me rappelle que…","J’voulais juste oublier mais…","Je pensais revenir pareil mais…",
+  "Le plus dur à avouer c’est…","Ce soir j’ai compris que…","J’ai pas tourné la page parce que…",
+  "Je leur ai souri alors que…","Le problème avec les souvenirs c’est que…","J’avance doucement parce que…",
+  "Je fais genre ça va mais…","Le jour où tout s’écroule…","J’aurais aimé lui dire que…",
+  "Je dors mal depuis que…","Je sais qu’ils mentent quand…","Le décor change mais…",
+  "Je garde la tête haute parce que…","Même mes victoires ont un goût de…","Je fais semblant d’être froid mais…"
+];
 
 const PALETTE = ["#3dba6e","#4a85d4","#e06060","#c8962a","#9060c8","#2ab8b8","#d47840","#b84090"];
 const COLS = 4;
 const VISIBLE_ROWS = 7;
+const BEATS_PER_MEASURE = 4;
 const TRIGGER_BLOCK_BEATS = 32;
 
-// ====================== STATE ======================
 const state = {
   bpm: 90,
   selectedMode: "rimes",
@@ -482,12 +654,23 @@ const state = {
   lastBeatTime: 0,
   lastSubBeatTime: 0,
   animFrameId: null,
-
-  rimes: { rows: [], rowIdx: 0, colIdx: 0, groupBags: [], groupUsage: [], recentGroups: [] },
-  declencheurs: { theme: "", triggers: [], cycleBeat: 0, recentThemes: [], recentTriggers: [] }
+  rimes: {
+    rows: [],
+    rowIdx: 0,
+    colIdx: 0,
+    groupBags: [],
+    groupUsage: [],
+    recentGroups: []
+  },
+  declencheurs: {
+    theme: "",
+    triggers: [],
+    cycleBeat: 0,
+    recentThemes: [],
+    recentTriggers: []
+  }
 };
 
-// ====================== AUDIO ======================
 let audioCtx = null;
 let drumStep = 0;
 
@@ -495,23 +678,28 @@ function ensureAudio() {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
-  if (audioCtx.state === "suspended") audioCtx.resume();
+  if (audioCtx.state === "suspended") {
+    audioCtx.resume();
+  }
 }
 
 function playKick(time = null) {
   ensureAudio();
   const t = time ?? audioCtx.currentTime;
+
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
 
   osc.type = "sine";
   osc.frequency.setValueAtTime(150, t);
   osc.frequency.exponentialRampToValueAtTime(45, t + 0.12);
+
   gain.gain.setValueAtTime(1.0, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
 
   osc.connect(gain);
   gain.connect(audioCtx.destination);
+
   osc.start(t);
   osc.stop(t + 0.13);
 }
@@ -519,16 +707,22 @@ function playKick(time = null) {
 function playSnare(time = null) {
   ensureAudio();
   const t = time ?? audioCtx.currentTime;
+
   const bufferSize = Math.floor(audioCtx.sampleRate * 0.18);
   const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
   const data = buffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = Math.random() * 2 - 1;
+  }
 
   const noise = audioCtx.createBufferSource();
   noise.buffer = buffer;
+
   const filter = audioCtx.createBiquadFilter();
   filter.type = "highpass";
   filter.frequency.setValueAtTime(1800, t);
+
   const gain = audioCtx.createGain();
   gain.gain.setValueAtTime(0.65, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + 0.10);
@@ -536,6 +730,7 @@ function playSnare(time = null) {
   noise.connect(filter);
   filter.connect(gain);
   gain.connect(audioCtx.destination);
+
   noise.start(t);
   noise.stop(t + 0.11);
 }
@@ -543,16 +738,22 @@ function playSnare(time = null) {
 function playHat(time = null) {
   ensureAudio();
   const t = time ?? audioCtx.currentTime;
+
   const bufferSize = Math.floor(audioCtx.sampleRate * 0.05);
   const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
   const data = buffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.5;
+
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * 0.5;
+  }
 
   const noise = audioCtx.createBufferSource();
   noise.buffer = buffer;
+
   const filter = audioCtx.createBiquadFilter();
   filter.type = "highpass";
   filter.frequency.setValueAtTime(7000, t);
+
   const gain = audioCtx.createGain();
   gain.gain.setValueAtTime(0.18, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + 0.03);
@@ -560,19 +761,30 @@ function playHat(time = null) {
   noise.connect(filter);
   filter.connect(gain);
   gain.connect(audioCtx.destination);
+
   noise.start(t);
   noise.stop(t + 0.04);
 }
 
 function playDrumSubstep(step) {
   playHat();
-  if (step === 0 || step === 4 || step === 5) playKick();
-  if (step === 2 || step === 6) playSnare();
+
+  if (step === 0 || step === 4 || step === 5) {
+    playKick();
+  }
+  if (step === 2 || step === 6) {
+    playSnare();
+  }
 }
 
-// ====================== UTILITAIRES ======================
-function beatInterval() { return 60000 / state.bpm; }
-function sampleOne(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function beatInterval() {
+  return 60000 / state.bpm;
+}
+
+function sampleOne(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -582,13 +794,20 @@ function shuffle(arr) {
   return a;
 }
 
-// ====================== RIMES ======================
+function setMode(mode) {
+  state.selectedMode = mode;
+  document.getElementById("mode-rimes-card").classList.toggle("active", mode === "rimes");
+  document.getElementById("mode-declencheurs-card").classList.toggle("active", mode === "declencheurs");
+}
+
 function refillBag(g) {
   state.rimes.groupBags[g].push(...shuffle(RHYME_GROUPS[g].words));
 }
 
 function pickDistinctWords(g, n) {
-  const chosen = [], seen = new Set();
+  const chosen = [];
+  const seen = new Set();
+
   while (chosen.length < n) {
     if (!state.rimes.groupBags[g].length) refillBag(g);
     const w = state.rimes.groupBags[g].pop();
@@ -596,6 +815,7 @@ function pickDistinctWords(g, n) {
     chosen.push(w);
     seen.add(w);
   }
+
   return chosen;
 }
 
@@ -613,6 +833,7 @@ function chooseRhymeGroup() {
 
   const total = weights.reduce((a, b) => a + b, 0);
   let r = Math.random() * total;
+
   for (let k = 0; k < candidates.length; k++) {
     r -= weights[k];
     if (r <= 0) {
@@ -622,18 +843,22 @@ function chooseRhymeGroup() {
       return g;
     }
   }
+
   return candidates[candidates.length - 1];
 }
 
 function helperWord(g, forbidden, rowIdx) {
   const forbiddenSet = new Set([forbidden]);
+
   if (rowIdx > 0) {
     forbiddenSet.add(state.rimes.rows[rowIdx - 1].word4);
     if (state.rimes.rows[rowIdx - 1].word2) forbiddenSet.add(state.rimes.rows[rowIdx - 1].word2);
   }
+
   let available = RHYME_GROUPS[g].words.filter(w => !forbiddenSet.has(w));
   if (!available.length) available = RHYME_GROUPS[g].words.filter(w => w !== forbidden);
-  return available.length ? sampleOne(available) : null;
+  if (!available.length) return null;
+  return sampleOne(available);
 }
 
 function generateRhymeBlock() {
@@ -645,7 +870,13 @@ function generateRhymeBlock() {
   for (const w4 of words4) {
     const rowIdx = state.rimes.rows.length;
     const w2 = Math.random() < 0.25 ? helperWord(g, w4, rowIdx) : null;
-    state.rimes.rows.push({ word2: w2, word4: w4, group: g, color, key: RHYME_GROUPS[g].key });
+    state.rimes.rows.push({
+      word2: w2,
+      word4: w4,
+      group: g,
+      color,
+      key: RHYME_GROUPS[g].key
+    });
   }
 }
 
@@ -672,7 +903,6 @@ function advanceRimes() {
   }
 }
 
-// ====================== DÉCLENCHEURS ======================
 function pickTheme() {
   const recent = state.declencheurs.recentThemes.slice(-10);
   let pool = THEMES.filter(t => !recent.includes(t));
@@ -690,6 +920,7 @@ function pickTriggers(n = 4) {
 function initDeclencheursPack() {
   const theme = pickTheme();
   const triggers = pickTriggers(4);
+
   state.declencheurs.theme = theme;
   state.declencheurs.triggers = triggers;
   state.declencheurs.cycleBeat = 0;
@@ -718,7 +949,12 @@ function currentMeasureInBlock() {
   return Math.floor(state.declencheurs.cycleBeat / 4) + 1;
 }
 
-// ====================== RENDER ======================
+function currentBeatInMeasure() {
+  return state.selectedMode === "rimes"
+    ? state.rimes.colIdx + 1
+    : (state.declencheurs.cycleBeat % 4) + 1;
+}
+
 function hexToRgba(hex, alpha) {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -729,6 +965,7 @@ function hexToRgba(hex, alpha) {
 function buildRhymeRows() {
   const gridEl = document.getElementById("grid");
   gridEl.innerHTML = "";
+
   const startRow = Math.max(0, state.rimes.rowIdx - 2);
   const endRow = startRow + VISIBLE_ROWS;
   ensureRhymeRows(endRow + 4);
@@ -736,6 +973,7 @@ function buildRhymeRows() {
   for (let vr = 0; vr < VISIBLE_ROWS; vr++) {
     const realR = startRow + vr;
     if (realR >= state.rimes.rows.length) break;
+
     const row = state.rimes.rows[realR];
     const rowDiv = document.createElement("div");
     rowDiv.className = "grid-row";
@@ -764,8 +1002,10 @@ function buildRhymeRows() {
       if (realR === state.rimes.rowIdx && c === state.rimes.colIdx) {
         cell.classList.add("is-cursor");
       }
+
       rowDiv.appendChild(cell);
     }
+
     gridEl.appendChild(rowDiv);
   }
 }
@@ -811,12 +1051,12 @@ function updateHUD() {
 
   if (state.selectedMode === "rimes") {
     const cur = state.rimes.rows[state.rimes.rowIdx];
-    document.getElementById("hud-a").innerHTML = `L.<span id="hud-a-value">${state.rimes.rowIdx + 1}</span>`;
-    document.getElementById("hud-b").innerHTML = `<span id="hud-b-value">${state.rimes.colIdx + 1}</span>/4`;
+    document.getElementById("hud-a").innerHTML = 'L.<span id="hud-a-value">' + (state.rimes.rowIdx + 1) + '</span>';
+    document.getElementById("hud-b").innerHTML = '<span id="hud-b-value">' + (state.rimes.colIdx + 1) + '</span>/4';
     document.getElementById("hud-main").textContent = cur ? cur.word4 : "—";
   } else {
-    document.getElementById("hud-a").innerHTML = `MES.<span id="hud-a-value">${currentMeasureInBlock()}</span>/8`;
-    document.getElementById("hud-b").innerHTML = `<span id="hud-b-value">${(state.declencheurs.cycleBeat % 4) + 1}</span>/4`;
+    document.getElementById("hud-a").innerHTML = 'MES.<span id="hud-a-value">' + currentMeasureInBlock() + '</span>/8';
+    document.getElementById("hud-b").innerHTML = '<span id="hud-b-value">' + currentBeatInMeasure() + '</span>/4';
     document.getElementById("hud-main").textContent = state.declencheurs.theme || "—";
   }
 }
@@ -825,18 +1065,20 @@ function render() {
   document.getElementById("rimes-view").classList.toggle("hidden", state.selectedMode !== "rimes");
   document.getElementById("declencheurs-view").classList.toggle("hidden", state.selectedMode !== "declencheurs");
 
-  if (state.selectedMode === "rimes") buildRhymeRows();
-  else buildTriggerCards();
+  if (state.selectedMode === "rimes") {
+    buildRhymeRows();
+  } else {
+    buildTriggerCards();
+  }
 
   updateHUD();
 }
 
-// ====================== CONTROLES ======================
 function setPlayButton(isRunning) {
-  const btn = document.getElementById("btn-pause");
-  btn.querySelector(".icon").textContent = isRunning ? "⏸" : "▶";
-  btn.querySelector("span:last-child").textContent = isRunning ? "PAUSE" : "PLAY";
-  btn.classList.toggle("pause-active", !isRunning);
+  const pauseBtn = document.getElementById("btn-pause");
+  pauseBtn.querySelector(".icon").textContent = isRunning ? "⏸" : "▶";
+  pauseBtn.querySelector("span:last-child").textContent = isRunning ? "PAUSE" : "PLAY";
+  pauseBtn.classList.toggle("pause-active", !isRunning);
 }
 
 function startSelectedMode() {
@@ -856,7 +1098,9 @@ function startSelectedMode() {
   setPlayButton(false);
   render();
 
-  if (!state.animFrameId) state.animFrameId = requestAnimationFrame(loop);
+  if (!state.animFrameId) {
+    state.animFrameId = requestAnimationFrame(loop);
+  }
 }
 
 function goHome() {
@@ -874,9 +1118,11 @@ function togglePause() {
 
   if (state.running) {
     ensureAudio();
+
     const now = performance.now();
     state.lastBeatTime = now;
     state.lastSubBeatTime = now;
+
     drumStep = 0;
     playDrumSubstep(drumStep);
     drumStep = (drumStep + 1) % 8;
@@ -896,6 +1142,7 @@ function resetCurrentMode() {
   else initDeclencheurs();
 
   state.running = false;
+
   const now = performance.now();
   state.lastBeatTime = now;
   state.lastSubBeatTime = now;
@@ -905,20 +1152,17 @@ function resetCurrentMode() {
   render();
 }
 
-// ====================== LOOP PRINCIPAL ======================
 function loop(now) {
   if (state.activeScreen === "game" && state.running) {
     const beatMs = beatInterval();
     const subBeatMs = beatMs / 2;
 
-    // Gestion des croches (batterie)
     while (now - state.lastSubBeatTime >= subBeatMs) {
       state.lastSubBeatTime += subBeatMs;
       playDrumSubstep(drumStep);
       drumStep = (drumStep + 1) % 8;
     }
 
-    // Gestion des temps (avancement grille / déclencheurs)
     while (now - state.lastBeatTime >= beatMs) {
       state.lastBeatTime += beatMs;
 
@@ -934,40 +1178,35 @@ function loop(now) {
   state.animFrameId = requestAnimationFrame(loop);
 }
 
-// ====================== ÉVÉNEMENTS ======================
-document.getElementById("mode-rimes-card").addEventListener("click", () => {
-  state.selectedMode = "rimes";
-  document.getElementById("mode-rimes-card").classList.add("active");
-  document.getElementById("mode-declencheurs-card").classList.remove("active");
-});
+document.getElementById("mode-rimes-card").addEventListener("click", () => setMode("rimes"));
+document.getElementById("mode-declencheurs-card").addEventListener("click", () => setMode("declencheurs"));
 
-document.getElementById("mode-declencheurs-card").addEventListener("click", () => {
-  state.selectedMode = "declencheurs";
-  document.getElementById("mode-rimes-card").classList.remove("active");
-  document.getElementById("mode-declencheurs-card").classList.add("active");
-});
-
-document.getElementById("bpm-up").addEventListener("click", () => changeBpm(5));
+document.getElementById("bpm-up").addEventListener("click", () => changeBpm(+5));
 document.getElementById("bpm-down").addEventListener("click", () => changeBpm(-5));
+
 document.getElementById("start-btn").addEventListener("click", startSelectedMode);
+
 document.getElementById("btn-pause").addEventListener("click", togglePause);
 document.getElementById("btn-bpm-down").addEventListener("click", () => changeBpm(-5));
-document.getElementById("btn-bpm-up").addEventListener("click", () => changeBpm(5));
+document.getElementById("btn-bpm-up").addEventListener("click", () => changeBpm(+5));
 document.getElementById("btn-reset").addEventListener("click", resetCurrentMode);
 document.getElementById("btn-home").addEventListener("click", goHome);
 
 document.addEventListener("keydown", (e) => {
   if (state.activeScreen !== "game") return;
-  if (e.key === " ") { e.preventDefault(); togglePause(); }
-  if (e.key === "ArrowUp") changeBpm(5);
+
+  if (e.key === " ") {
+    e.preventDefault();
+    togglePause();
+  }
+  if (e.key === "ArrowUp") changeBpm(+5);
   if (e.key === "ArrowDown") changeBpm(-5);
-  if (e.key.toLowerCase() === "r") resetCurrentMode();
+  if (e.key === "r" || e.key === "R") resetCurrentMode();
   if (e.key === "Escape") goHome();
 });
 
-// Initialisation
 document.getElementById("bpm-display").textContent = state.bpm;
-state.selectedMode = "rimes";
+setMode("rimes");
 setPlayButton(false);
 </script>
 </body>
