@@ -27,14 +27,7 @@
     --c6: #ff8f3f;
     --c7: #ff4fa3;
   }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-  }
-
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body {
     background: radial-gradient(circle at top, #171717 0%, #090909 55%, #050505 100%);
     position: relative;
@@ -46,7 +39,6 @@
     flex-direction: column;
     user-select: none;
   }
-
   body::before {
     content: "";
     position: fixed;
@@ -64,10 +56,7 @@
     mix-blend-mode: screen;
     opacity: 0.45;
   }
-
-  .hidden {
-    display: none !important;
-  }
+  .hidden { display: none !important; }
 
   #splash {
     position: fixed;
@@ -81,7 +70,6 @@
     z-index: 100;
     padding: 28px 22px;
   }
-
   #splash h1 {
     font-family: 'Anton', sans-serif;
     font-size: clamp(40px, 12vw, 74px);
@@ -93,7 +81,6 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-
   #splash p {
     color: var(--muted);
     font-size: 14px;
@@ -101,14 +88,12 @@
     max-width: 320px;
     line-height: 1.55;
   }
-
   .mode-picker {
     width: min(100%, 420px);
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
-
   .mode-card {
     background: linear-gradient(180deg, #232323 0%, #161616 100%);
     border: 1px solid var(--border);
@@ -119,29 +104,22 @@
     text-align: center;
     color: var(--text);
   }
-
-  .mode-card:active {
-    transform: scale(0.98);
-  }
-
+  .mode-card:active { transform: scale(0.98); }
   .mode-card.active {
     border-color: var(--cursor);
     box-shadow: 0 0 0 2px rgba(255,176,0,0.12), 0 0 24px rgba(255,176,0,0.12);
   }
-
   .mode-card .mode-title {
     font-family: 'Anton', sans-serif;
     font-size: 24px;
     letter-spacing: 1.5px;
   }
-
   .mode-card .mode-sub {
     color: var(--muted);
     font-size: 12px;
     line-height: 1.35;
     margin-top: 8px;
   }
-
   .bpm-control {
     display: flex;
     align-items: center;
@@ -152,7 +130,6 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.28);
     padding: 16px 28px;
   }
-
   .bpm-btn {
     background: none;
     border: none;
@@ -166,11 +143,7 @@
     justify-content: center;
     border-radius: 8px;
   }
-
-  .bpm-btn:active {
-    background: var(--border);
-  }
-
+  .bpm-btn:active { background: var(--border); }
   #bpm-display {
     font-family: 'Anton', sans-serif;
     font-size: 52px;
@@ -179,7 +152,6 @@
     text-align: center;
     line-height: 1;
   }
-
   .bpm-label {
     font-size: 13px;
     color: var(--muted);
@@ -187,7 +159,6 @@
     margin-top: -6px;
     letter-spacing: 2px;
   }
-
   #start-btn {
     background: linear-gradient(135deg, var(--cursor) 0%, #ff6b57 100%);
     color: #090909;
@@ -200,17 +171,13 @@
     cursor: pointer;
     box-shadow: 0 4px 24px rgba(255,176,0,0.26);
   }
-
-  #start-btn:active {
-    transform: scale(0.97);
-  }
+  #start-btn:active { transform: scale(0.97); }
 
   #game {
     display: none;
     flex-direction: column;
     height: 100dvh;
   }
-
   #hud {
     display: flex;
     align-items: center;
@@ -219,7 +186,6 @@
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
   }
-
   .hud-pill {
     background: linear-gradient(180deg, #232323 0%, #181818 100%);
     border: 1px solid var(--border);
@@ -232,11 +198,7 @@
     white-space: nowrap;
     line-height: 1;
   }
-
-  .hud-pill span {
-    color: var(--cursor);
-  }
-
+  .hud-pill span { color: var(--cursor); }
   #hud-main {
     flex: 1;
     text-align: right;
@@ -248,7 +210,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-
   #view-wrap {
     flex: 1;
     min-height: 0;
@@ -257,23 +218,18 @@
     padding: 10px 10px 0;
   }
 
-  #rimes-view {
-    height: 100%;
-  }
-
+  #rimes-view { height: 100%; }
   #grid {
     display: flex;
     flex-direction: column;
     gap: 7px;
   }
-
   .grid-row {
     display: grid;
     grid-template-columns: 28px 1fr 1fr 1fr 1fr;
     gap: 6px;
     align-items: center;
   }
-
   .row-num {
     font-family: 'Teko', sans-serif;
     font-size: 14px;
@@ -281,7 +237,6 @@
     text-align: right;
     padding-right: 2px;
   }
-
   .cell {
     border-radius: 10px;
     border: 1.5px solid var(--border);
@@ -300,17 +255,12 @@
     text-align: center;
     padding: 6px;
   }
-
-  .cell.has-word {
-    color: var(--text);
-  }
-
+  .cell.has-word { color: var(--text); }
   .cell.is-cursor {
     border-color: var(--cursor) !important;
     box-shadow: 0 0 0 2px var(--cursor-glow), 0 0 14px var(--cursor-glow);
     animation: pulse-cursor 0.9s ease-in-out infinite;
   }
-
   @keyframes pulse-cursor {
     0%, 100% { box-shadow: 0 0 0 2px var(--cursor-glow), 0 0 14px var(--cursor-glow); }
     50% { box-shadow: 0 0 0 4px var(--cursor-glow), 0 0 24px var(--cursor-glow); }
@@ -322,7 +272,6 @@
     flex-direction: column;
     gap: 12px;
   }
-
   .theme-card {
     border: 1px solid var(--border);
     border-radius: 16px;
@@ -330,7 +279,6 @@
     padding: 16px 14px 14px;
     box-shadow: 0 10px 24px rgba(0,0,0,0.22);
   }
-
   .theme-label {
     font-family: 'Teko', sans-serif;
     color: var(--muted);
@@ -338,7 +286,6 @@
     line-height: 1;
     letter-spacing: 1.2px;
   }
-
   .theme-value {
     margin-top: 8px;
     font-family: 'Anton', sans-serif;
@@ -349,14 +296,12 @@
     text-transform: uppercase;
     word-break: break-word;
   }
-
   #trigger-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
     flex: 1;
   }
-
   .trigger-card {
     border: 1.5px solid var(--border);
     border-radius: 14px;
@@ -368,13 +313,11 @@
     gap: 12px;
     transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
   }
-
   .trigger-card.active {
     border-color: var(--cursor);
     box-shadow: 0 0 0 2px rgba(255,176,0,0.12), 0 0 18px rgba(255,176,0,0.16);
     transform: translateY(-1px);
   }
-
   .trigger-index {
     width: 28px;
     flex-shrink: 0;
@@ -383,18 +326,13 @@
     color: var(--muted);
     text-align: center;
   }
-
-  .trigger-card.active .trigger-index {
-    color: var(--cursor);
-  }
-
+  .trigger-card.active .trigger-index { color: var(--cursor); }
   .trigger-text {
     font-size: 17px;
     line-height: 1.25;
     font-weight: 700;
     color: var(--text);
   }
-
   .trigger-hint {
     font-size: 12px;
     color: var(--muted);
@@ -409,7 +347,6 @@
     padding: 8px 10px 12px;
     border-top: 1px solid var(--border);
   }
-
   .ctrl-btn {
     background: linear-gradient(180deg, #232323 0%, #181818 100%);
     border: 1px solid var(--border);
@@ -428,22 +365,18 @@
     text-align: center;
     min-height: 64px;
   }
-
   .ctrl-btn:active {
     background: var(--border);
     transform: scale(0.97);
   }
-
   .ctrl-btn .icon {
     font-size: 18px;
     font-family: 'Anton', sans-serif;
   }
-
   .ctrl-btn.pause-active {
     border-color: var(--cursor);
     color: var(--cursor);
   }
-
   @media (max-width: 420px) {
     .cell { font-size: 13px; }
     .trigger-text { font-size: 15px; }
@@ -652,27 +585,16 @@ const state = {
   activeScreen: "splash",
   running: false,
   lastBeatTime: 0,
-  lastSubBeatTime: 0,
   animFrameId: null,
-  rimes: {
-    rows: [],
-    rowIdx: 0,
-    colIdx: 0,
-    groupBags: [],
-    groupUsage: [],
-    recentGroups: []
-  },
-  declencheurs: {
-    theme: "",
-    triggers: [],
-    cycleBeat: 0,
-    recentThemes: [],
-    recentTriggers: []
-  }
+  rimes: { rows: [], rowIdx: 0, colIdx: 0, groupBags: [], groupUsage: [], recentGroups: [] },
+  declencheurs: { theme: "", triggers: [], cycleBeat: 0, recentThemes: [], recentTriggers: [] }
 };
 
 let audioCtx = null;
-let drumStep = 0;
+let beatSoundStep = 0;
+
+// Pattern : boum tchak boum boum tchak
+const DRUM_PATTERN = ["kick", "snare", "kick", "kick", "snare"];
 
 function ensureAudio() {
   if (!audioCtx) {
@@ -708,7 +630,7 @@ function playSnare(time = null) {
   ensureAudio();
   const t = time ?? audioCtx.currentTime;
 
-  const bufferSize = Math.floor(audioCtx.sampleRate * 0.18);
+  const bufferSize = audioCtx.sampleRate * 0.2;
   const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
   const data = buffer.getChannelData(0);
 
@@ -724,67 +646,26 @@ function playSnare(time = null) {
   filter.frequency.setValueAtTime(1800, t);
 
   const gain = audioCtx.createGain();
-  gain.gain.setValueAtTime(0.65, t);
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.10);
+  gain.gain.setValueAtTime(0.55, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.11);
 
   noise.connect(filter);
   filter.connect(gain);
   gain.connect(audioCtx.destination);
 
   noise.start(t);
-  noise.stop(t + 0.11);
+  noise.stop(t + 0.12);
 }
 
-function playHat(time = null) {
-  ensureAudio();
-  const t = time ?? audioCtx.currentTime;
-
-  const bufferSize = Math.floor(audioCtx.sampleRate * 0.05);
-  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-  const data = buffer.getChannelData(0);
-
-  for (let i = 0; i < bufferSize; i++) {
-    data[i] = (Math.random() * 2 - 1) * 0.5;
-  }
-
-  const noise = audioCtx.createBufferSource();
-  noise.buffer = buffer;
-
-  const filter = audioCtx.createBiquadFilter();
-  filter.type = "highpass";
-  filter.frequency.setValueAtTime(7000, t);
-
-  const gain = audioCtx.createGain();
-  gain.gain.setValueAtTime(0.18, t);
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.03);
-
-  noise.connect(filter);
-  filter.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  noise.start(t);
-  noise.stop(t + 0.04);
+function playPatternStep() {
+  const sound = DRUM_PATTERN[beatSoundStep % DRUM_PATTERN.length];
+  if (sound === "kick") playKick();
+  else playSnare();
+  beatSoundStep++;
 }
-
-function playDrumSubstep(step) {
-  playHat();
-
-  if (step === 0 || step === 4 || step === 5) {
-    playKick();
-  }
-  if (step === 2 || step === 6) {
-    playSnare();
-  }
-}
-
-function beatInterval() {
-  return 60000 / state.bpm;
-}
-
-function sampleOne(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
+  
+function beatInterval() { return 60000 / state.bpm; }
+function sampleOne(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -793,21 +674,14 @@ function shuffle(arr) {
   }
   return a;
 }
-
 function setMode(mode) {
   state.selectedMode = mode;
   document.getElementById("mode-rimes-card").classList.toggle("active", mode === "rimes");
   document.getElementById("mode-declencheurs-card").classList.toggle("active", mode === "declencheurs");
 }
-
-function refillBag(g) {
-  state.rimes.groupBags[g].push(...shuffle(RHYME_GROUPS[g].words));
-}
-
+function refillBag(g) { state.rimes.groupBags[g].push(...shuffle(RHYME_GROUPS[g].words)); }
 function pickDistinctWords(g, n) {
-  const chosen = [];
-  const seen = new Set();
-
+  const chosen = [], seen = new Set();
   while (chosen.length < n) {
     if (!state.rimes.groupBags[g].length) refillBag(g);
     const w = state.rimes.groupBags[g].pop();
@@ -815,25 +689,20 @@ function pickDistinctWords(g, n) {
     chosen.push(w);
     seen.add(w);
   }
-
   return chosen;
 }
-
 function chooseRhymeGroup() {
   const recent = new Set(state.rimes.recentGroups.slice(-12));
   let candidates = RHYME_GROUPS.map((_, i) => i).filter(i => !recent.has(i));
   if (!candidates.length) candidates = RHYME_GROUPS.map((_, i) => i);
-
   const weights = candidates.map(i => {
     const base = 1 / (1 + state.rimes.groupUsage[i]);
     if (RHYME_GROUPS[i].syllables === 2) return base * 1.8;
     if (RHYME_GROUPS[i].syllables === 1) return base * 0.45;
     return base * 0.9;
   });
-
   const total = weights.reduce((a, b) => a + b, 0);
   let r = Math.random() * total;
-
   for (let k = 0; k < candidates.length; k++) {
     r -= weights[k];
     if (r <= 0) {
@@ -843,47 +712,31 @@ function chooseRhymeGroup() {
       return g;
     }
   }
-
   return candidates[candidates.length - 1];
 }
-
 function helperWord(g, forbidden, rowIdx) {
   const forbiddenSet = new Set([forbidden]);
-
   if (rowIdx > 0) {
     forbiddenSet.add(state.rimes.rows[rowIdx - 1].word4);
     if (state.rimes.rows[rowIdx - 1].word2) forbiddenSet.add(state.rimes.rows[rowIdx - 1].word2);
   }
-
   let available = RHYME_GROUPS[g].words.filter(w => !forbiddenSet.has(w));
   if (!available.length) available = RHYME_GROUPS[g].words.filter(w => w !== forbidden);
   if (!available.length) return null;
   return sampleOne(available);
 }
-
 function generateRhymeBlock() {
   const blockLen = Math.random() < 0.30 ? 4 : 2;
   const g = chooseRhymeGroup();
   const color = PALETTE[g % PALETTE.length];
   const words4 = pickDistinctWords(g, blockLen);
-
   for (const w4 of words4) {
     const rowIdx = state.rimes.rows.length;
     const w2 = Math.random() < 0.25 ? helperWord(g, w4, rowIdx) : null;
-    state.rimes.rows.push({
-      word2: w2,
-      word4: w4,
-      group: g,
-      color,
-      key: RHYME_GROUPS[g].key
-    });
+    state.rimes.rows.push({ word2: w2, word4: w4, group: g, color, key: RHYME_GROUPS[g].key });
   }
 }
-
-function ensureRhymeRows(n) {
-  while (state.rimes.rows.length < n) generateRhymeBlock();
-}
-
+function ensureRhymeRows(n) { while (state.rimes.rows.length < n) generateRhymeBlock(); }
 function initRimes() {
   state.rimes.rows = [];
   state.rimes.rowIdx = 0;
@@ -893,7 +746,6 @@ function initRimes() {
   state.rimes.recentGroups = [];
   ensureRhymeRows(24);
 }
-
 function advanceRimes() {
   state.rimes.colIdx++;
   if (state.rimes.colIdx >= COLS) {
@@ -902,91 +754,68 @@ function advanceRimes() {
     ensureRhymeRows(state.rimes.rowIdx + 24);
   }
 }
-
 function pickTheme() {
   const recent = state.declencheurs.recentThemes.slice(-10);
   let pool = THEMES.filter(t => !recent.includes(t));
   if (!pool.length) pool = [...THEMES];
   return sampleOne(pool);
 }
-
 function pickTriggers(n = 4) {
   const recent = state.declencheurs.recentTriggers.slice(-12);
   let pool = TRIGGERS.filter(t => !recent.includes(t));
   if (pool.length < n) pool = [...TRIGGERS];
   return shuffle(pool).slice(0, n);
 }
-
 function initDeclencheursPack() {
   const theme = pickTheme();
   const triggers = pickTriggers(4);
-
   state.declencheurs.theme = theme;
   state.declencheurs.triggers = triggers;
   state.declencheurs.cycleBeat = 0;
   state.declencheurs.recentThemes.push(theme);
   state.declencheurs.recentTriggers.push(...triggers);
 }
-
 function initDeclencheurs() {
   state.declencheurs.recentThemes = [];
   state.declencheurs.recentTriggers = [];
   initDeclencheursPack();
 }
-
 function advanceDeclencheurs() {
   state.declencheurs.cycleBeat++;
   if (state.declencheurs.cycleBeat >= TRIGGER_BLOCK_BEATS) {
     initDeclencheursPack();
   }
 }
-
-function activeTriggerIndex() {
-  return Math.min(3, Math.floor(state.declencheurs.cycleBeat / 8));
-}
-
-function currentMeasureInBlock() {
-  return Math.floor(state.declencheurs.cycleBeat / 4) + 1;
-}
-
+function activeTriggerIndex() { return Math.min(3, Math.floor(state.declencheurs.cycleBeat / 8)); }
+function currentMeasureInBlock() { return Math.floor(state.declencheurs.cycleBeat / 4) + 1; }
 function currentBeatInMeasure() {
-  return state.selectedMode === "rimes"
-    ? state.rimes.colIdx + 1
-    : (state.declencheurs.cycleBeat % 4) + 1;
+  return state.selectedMode === "rimes" ? state.rimes.colIdx + 1 : (state.declencheurs.cycleBeat % 4) + 1;
 }
-
 function hexToRgba(hex, alpha) {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
-
 function buildRhymeRows() {
   const gridEl = document.getElementById("grid");
   gridEl.innerHTML = "";
-
   const startRow = Math.max(0, state.rimes.rowIdx - 2);
   const endRow = startRow + VISIBLE_ROWS;
   ensureRhymeRows(endRow + 4);
-
   for (let vr = 0; vr < VISIBLE_ROWS; vr++) {
     const realR = startRow + vr;
     if (realR >= state.rimes.rows.length) break;
-
     const row = state.rimes.rows[realR];
     const rowDiv = document.createElement("div");
     rowDiv.className = "grid-row";
-
     const numEl = document.createElement("div");
     numEl.className = "row-num";
     numEl.textContent = realR + 1;
     rowDiv.appendChild(numEl);
-
     for (let c = 0; c < COLS; c++) {
       const cell = document.createElement("div");
       cell.className = "cell";
-
       if (c === 1 && row.word2) {
         cell.classList.add("has-word");
         cell.textContent = row.word2;
@@ -998,57 +827,44 @@ function buildRhymeRows() {
         cell.style.background = hexToRgba(row.color, 0.45);
         cell.style.borderColor = row.color;
       }
-
       if (realR === state.rimes.rowIdx && c === state.rimes.colIdx) {
         cell.classList.add("is-cursor");
       }
-
       rowDiv.appendChild(cell);
     }
-
     gridEl.appendChild(rowDiv);
   }
 }
-
 function buildTriggerCards() {
   const list = document.getElementById("trigger-list");
   list.innerHTML = "";
   const activeIdx = activeTriggerIndex();
-
   state.declencheurs.triggers.forEach((txt, i) => {
     const card = document.createElement("div");
     card.className = "trigger-card";
     if (i === activeIdx) card.classList.add("active");
-
     const idx = document.createElement("div");
     idx.className = "trigger-index";
     idx.textContent = i + 1;
-
     const wrap = document.createElement("div");
     wrap.style.flex = "1";
-
     const text = document.createElement("div");
     text.className = "trigger-text";
     text.textContent = txt;
-
     const hint = document.createElement("div");
     hint.className = "trigger-hint";
     hint.textContent = i === activeIdx ? "déclencheur actif" : "à exploiter ensuite";
-
     wrap.appendChild(text);
     wrap.appendChild(hint);
     card.appendChild(idx);
     card.appendChild(wrap);
     list.appendChild(card);
   });
-
   document.getElementById("theme-value").textContent = state.declencheurs.theme || "—";
 }
-
 function updateHUD() {
   document.getElementById("hud-mode").textContent = state.selectedMode === "rimes" ? "RIMES" : "DÉCL.";
   document.getElementById("hud-bpm").textContent = state.bpm;
-
   if (state.selectedMode === "rimes") {
     const cur = state.rimes.rows[state.rimes.rowIdx];
     document.getElementById("hud-a").innerHTML = 'L.<span id="hud-a-value">' + (state.rimes.rowIdx + 1) + '</span>';
@@ -1060,35 +876,24 @@ function updateHUD() {
     document.getElementById("hud-main").textContent = state.declencheurs.theme || "—";
   }
 }
-
 function render() {
   document.getElementById("rimes-view").classList.toggle("hidden", state.selectedMode !== "rimes");
   document.getElementById("declencheurs-view").classList.toggle("hidden", state.selectedMode !== "declencheurs");
-
-  if (state.selectedMode === "rimes") {
-    buildRhymeRows();
-  } else {
-    buildTriggerCards();
-  }
-
+  if (state.selectedMode === "rimes") buildRhymeRows();
+  else buildTriggerCards();
   updateHUD();
 }
-
 function setPlayButton(isRunning) {
   const pauseBtn = document.getElementById("btn-pause");
   pauseBtn.querySelector(".icon").textContent = isRunning ? "⏸" : "▶";
   pauseBtn.querySelector("span:last-child").textContent = isRunning ? "PAUSE" : "PLAY";
   pauseBtn.classList.toggle("pause-active", !isRunning);
 }
-
 function startSelectedMode() {
   state.activeScreen = "game";
   state.running = false;
-
-  const now = performance.now();
-  state.lastBeatTime = now;
-  state.lastSubBeatTime = now;
-  drumStep = 0;
+  state.lastBeatTime = performance.now();
+  beatSoundStep = 0;
 
   if (state.selectedMode === "rimes") initRimes();
   else initDeclencheurs();
@@ -1098,11 +903,9 @@ function startSelectedMode() {
   setPlayButton(false);
   render();
 
-  if (!state.animFrameId) {
-    state.animFrameId = requestAnimationFrame(loop);
-  }
+  if (!state.animFrameId) state.animFrameId = requestAnimationFrame(loop);
 }
-
+  
 function goHome() {
   state.activeScreen = "splash";
   state.running = false;
@@ -1110,7 +913,6 @@ function goHome() {
   document.getElementById("splash").style.display = "flex";
   setPlayButton(false);
 }
-
 function togglePause() {
   if (state.activeScreen !== "game") return;
 
@@ -1118,93 +920,70 @@ function togglePause() {
 
   if (state.running) {
     ensureAudio();
+    state.lastBeatTime = performance.now();
 
-    const now = performance.now();
-    state.lastBeatTime = now;
-    state.lastSubBeatTime = now;
-
-    drumStep = 0;
-    playDrumSubstep(drumStep);
-    drumStep = (drumStep + 1) % 8;
+    // Lance le son immédiatement quand on appuie sur PLAY
+    playPatternStep();
   }
 
   setPlayButton(state.running);
 }
-
 function changeBpm(delta) {
   state.bpm = Math.max(30, Math.min(240, state.bpm + delta));
   document.getElementById("bpm-display").textContent = state.bpm;
   updateHUD();
 }
-
 function resetCurrentMode() {
   if (state.selectedMode === "rimes") initRimes();
   else initDeclencheurs();
 
   state.running = false;
-
-  const now = performance.now();
-  state.lastBeatTime = now;
-  state.lastSubBeatTime = now;
-  drumStep = 0;
+  state.lastBeatTime = performance.now();
+  beatSoundStep = 0;
 
   setPlayButton(false);
   render();
 }
-
+  
 function loop(now) {
   if (state.activeScreen === "game" && state.running) {
-    const beatMs = beatInterval();
-    const subBeatMs = beatMs / 2;
+    const bi = beatInterval();
 
-    while (now - state.lastSubBeatTime >= subBeatMs) {
-      state.lastSubBeatTime += subBeatMs;
-      playDrumSubstep(drumStep);
-      drumStep = (drumStep + 1) % 8;
-    }
+    if (now - state.lastBeatTime >= bi) {
+      state.lastBeatTime += bi;
 
-    while (now - state.lastBeatTime >= beatMs) {
-      state.lastBeatTime += beatMs;
-
-      if (state.selectedMode === "rimes") {
-        advanceRimes();
-      } else {
-        advanceDeclencheurs();
+      if (state.lastBeatTime < now - bi * 2) {
+        state.lastBeatTime = now;
       }
+
+      playPatternStep();
+
+      if (state.selectedMode === "rimes") advanceRimes();
+      else advanceDeclencheurs();
     }
   }
 
   if (state.activeScreen === "game") render();
   state.animFrameId = requestAnimationFrame(loop);
 }
-
 document.getElementById("mode-rimes-card").addEventListener("click", () => setMode("rimes"));
 document.getElementById("mode-declencheurs-card").addEventListener("click", () => setMode("declencheurs"));
-
 document.getElementById("bpm-up").addEventListener("click", () => changeBpm(+5));
 document.getElementById("bpm-down").addEventListener("click", () => changeBpm(-5));
-
 document.getElementById("start-btn").addEventListener("click", startSelectedMode);
-
 document.getElementById("btn-pause").addEventListener("click", togglePause);
 document.getElementById("btn-bpm-down").addEventListener("click", () => changeBpm(-5));
 document.getElementById("btn-bpm-up").addEventListener("click", () => changeBpm(+5));
 document.getElementById("btn-reset").addEventListener("click", resetCurrentMode);
 document.getElementById("btn-home").addEventListener("click", goHome);
-
 document.addEventListener("keydown", (e) => {
   if (state.activeScreen !== "game") return;
-
-  if (e.key === " ") {
-    e.preventDefault();
-    togglePause();
-  }
+  if (e.key === " ") { e.preventDefault(); togglePause(); }
   if (e.key === "ArrowUp") changeBpm(+5);
   if (e.key === "ArrowDown") changeBpm(-5);
   if (e.key === "r" || e.key === "R") resetCurrentMode();
   if (e.key === "Escape") goHome();
 });
-
 document.getElementById("bpm-display").textContent = state.bpm;
 setMode("rimes");
 setPlayButton(false);
