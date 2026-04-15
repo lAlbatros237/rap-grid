@@ -7,38 +7,57 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0d0d14">
 <title>Freestyle Rap Grid</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Teko:wght@400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0d14;
-    --surface: #16161f;
-    --surface2: #1e1e2a;
-    --border: #2a2a3a;
-    --text: #f0f0f8;
-    --muted: #555570;
-    --cursor: #ffd23f;
-    --cursor-glow: rgba(255,210,63,0.3);
-    --c0: #3dba6e;
-    --c1: #4a85d4;
-    --c2: #e06060;
-    --c3: #c8962a;
-    --c4: #9060c8;
-    --c5: #2ab8b8;
-    --c6: #d47840;
-    --c7: #b84090;
+    --bg: #090909;
+    --surface: #151515;
+    --surface2: #1d1d1d;
+    --border: #2c2c2c;
+    --text: #f4f1e8;
+    --muted: #8d877a;
+    --cursor: #ffb000;
+    --cursor-glow: rgba(255,176,0,0.35);
+    --c0: #7fd36b;
+    --c1: #4f88ff;
+    --c2: #ff6b57;
+    --c3: #ffb000;
+    --c4: #9a6bff;
+    --c5: #2ec4b6;
+    --c6: #ff8f3f;
+    --c7: #ff4fa3;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   body {
-    background: var(--bg);
+    background: radial-gradient(circle at top, #171717 0%, #090909 55%, #050505 100%);
+    position: relative;
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     height: 100dvh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     user-select: none;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.02)),
+      repeating-linear-gradient(
+        135deg,
+        transparent 0px,
+        transparent 18px,
+        rgba(255,255,255,0.015) 18px,
+        rgba(255,255,255,0.015) 20px
+      );
+    mix-blend-mode: screen;
+    opacity: 0.45;
   }
 
   /* ========== SPLASH SCREEN ========== */
@@ -52,12 +71,12 @@
   }
 
   #splash h1 {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Anton', sans-serif;
     font-size: clamp(42px, 12vw, 72px);
-    letter-spacing: 4px;
+    letter-spacing: 3px;
     text-align: center;
     line-height: 1;
-    background: linear-gradient(135deg, var(--cursor) 0%, #ff9f40 100%);
+    background: linear-gradient(135deg, #fff2c2 0%, var(--cursor) 45%, #ff6b57 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -65,7 +84,7 @@
 
   #splash p {
     color: var(--muted);
-    font-size: 15px;
+    font-size: 14px;
     text-align: center;
     max-width: 280px;
     line-height: 1.6;
@@ -73,9 +92,10 @@
 
   .bpm-control {
     display: flex; align-items: center; gap: 20px;
-    background: var(--surface2);
+    background: linear-gradient(180deg, #232323 0%, #161616 100%);
     border: 1px solid var(--border);
     border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.28);
     padding: 16px 28px;
   }
 
@@ -90,7 +110,7 @@
   .bpm-btn:active { background: var(--border); }
 
   #bpm-display {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Anton', sans-serif;
     font-size: 52px;
     color: var(--cursor);
     min-width: 80px;
@@ -105,12 +125,12 @@
   }
 
   #start-btn {
-    background: var(--cursor);
-    color: #0d0d14;
+    background: linear-gradient(135deg, var(--cursor) 0%, #ff6b57 100%);
+    color: #090909;
     border: none;
     border-radius: 14px;
     padding: 18px 52px;
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Anton', sans-serif;
     font-size: 28px;
     letter-spacing: 3px;
     cursor: pointer;
@@ -132,11 +152,11 @@
   }
 
   .hud-pill {
-    background: var(--surface2);
+    background: linear-gradient(180deg, #232323 0%, #181818 100%);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 5px 12px;
-    font-family: 'Space Mono', monospace;
+    font-family: 'Teko', sans-serif;
     font-size: 13px;
     color: var(--text);
     white-space: nowrap;
@@ -147,10 +167,10 @@
   #target-word {
     flex: 1;
     text-align: right;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
+    font-family: 'Anton', sans-serif;
+    font-size: 24px;
     color: var(--cursor);
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -179,7 +199,7 @@
   }
 
   .row-num {
-    font-family: 'Space Mono', monospace;
+    font-family: 'Teko', sans-serif;
     font-size: 11px;
     color: var(--muted);
     text-align: right;
@@ -189,10 +209,10 @@
   .cell {
     border-radius: 10px;
     border: 1.5px solid var(--border);
-    background: var(--surface);
+    background: linear-gradient(180deg, #1d1d1d 0%, #131313 100%);
     height: 56px;
     display: flex; align-items: center; justify-content: center;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 15px;
     font-weight: 700;
     color: var(--text);
@@ -227,11 +247,11 @@
   }
 
   .ctrl-btn {
-    background: var(--surface2);
+    background: linear-gradient(180deg, #232323 0%, #181818 100%);
     border: 1px solid var(--border);
     border-radius: 12px;
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 13px;
     font-weight: 700;
     padding: 14px 8px;
@@ -246,30 +266,14 @@
 
   .ctrl-btn .icon { font-size: 20px; }
   .ctrl-btn.pause-active { border-color: var(--cursor); color: var(--cursor); }
-
-  /* ========== BEAT INDICATOR ========== */
-  #beat-bar {
-    height: 3px;
-    background: var(--border);
-    flex-shrink: 0;
-    position: relative;
-    overflow: hidden;
-  }
-
-  #beat-progress {
-    height: 100%;
-    background: var(--cursor);
-    width: 0%;
-    transition: width linear;
-  }
 </style>
 </head>
 <body>
 
 <!-- SPLASH -->
 <div id="splash">
-  <h1>FREESTYLE<br>RAP GRID</h1>
-  <p>Choisis ton BPM et rappé sur les rimes qui défilent</p>
+  <h1>RAP<br>STREET GRID</h1>
+  <p>Choisis ton BPM et pose tes phases sur la grille</p>
 
   <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
     <div class="bpm-control">
@@ -282,14 +286,12 @@
     </div>
   </div>
 
-  <button id="start-btn">LANCER</button>
+  <button id="start-btn">START</button>
 </div>
 
 <!-- GAME -->
 <div id="game">
-  <div id="beat-bar"><div id="beat-progress"></div></div>
-
-  <div id="hud">
+<div id="hud">
     <div class="hud-pill">BPM <span id="hud-bpm">90</span></div>
     <div class="hud-pill">L.<span id="hud-row">1</span></div>
     <div class="hud-pill"><span id="hud-beat">1</span>/4</div>
@@ -306,11 +308,11 @@
       <span>PAUSE</span>
     </button>
     <button class="ctrl-btn" id="btn-bpm-down">
-      <span class="icon">🐢</span>
+      <span class="icon">−</span>
       <span>−5 BPM</span>
     </button>
     <button class="ctrl-btn" id="btn-bpm-up">
-      <span class="icon">🐇</span>
+      <span class="icon">+</span>
       <span>+5 BPM</span>
     </button>
     <button class="ctrl-btn" id="btn-reset">
@@ -479,7 +481,6 @@ const hudBpm = document.getElementById('hud-bpm');
 const hudRow = document.getElementById('hud-row');
 const hudBeat = document.getElementById('hud-beat');
 const targetWord = document.getElementById('target-word');
-const beatProgress = document.getElementById('beat-progress');
 
 let renderedRows = 0;
 let renderedRowIdx = -1;
@@ -552,11 +553,9 @@ function buildRows() {
 }
 
 function updateCursorOnly() {
-  // Remove old cursor
   const old = gridEl.querySelector('.is-cursor');
   if (old) old.classList.remove('is-cursor');
 
-  // Find new cursor cell
   const startRow = Math.max(0, state.rowIdx - 2);
   const vr = state.rowIdx - startRow;
   const rowDivs = gridEl.querySelectorAll('.grid-row');
@@ -569,7 +568,6 @@ function updateCursorOnly() {
 
 function updateScroll() {
   const startRow = Math.max(0, state.rowIdx - 2);
-  // Nothing to scroll since we rebuild, just update HUD
 }
 
 function updateHUD() {
@@ -592,22 +590,6 @@ function render() {
   updateHUD();
 }
 
-// ============================================================
-// BEAT PROGRESS BAR
-// ============================================================
-let progressStart = 0;
-function animateProgress(now) {
-  if (!state.running) {
-    beatProgress.style.width = '0%';
-    beatProgress.style.transition = 'none';
-    return;
-  }
-  const elapsed = now - state.lastBeatTime;
-  const bi = beatInterval();
-  const pct = Math.min(100, (elapsed / bi) * 100);
-  beatProgress.style.transition = 'none';
-  beatProgress.style.width = pct + '%';
-}
 
 // ============================================================
 // GAME LOOP
@@ -629,7 +611,6 @@ function loop(now) {
       if (state.lastBeatTime < now - bi * 2) state.lastBeatTime = now;
       advance();
     }
-    animateProgress(now);
   }
   render();
   state.animFrameId = requestAnimationFrame(loop);
