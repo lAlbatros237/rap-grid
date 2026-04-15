@@ -636,14 +636,22 @@ function changeBpm(delta) {
 
 function resetGame() {
   if (state.animFrameId) cancelAnimationFrame(state.animFrameId);
+
   initState();
-  state.running = true;
+
+  // Après reset, on reste à l'arrêt
+  state.running = false;
   state.lastBeatTime = performance.now();
-  pauseBtn.querySelector('.icon').textContent = '⏸';
-  pauseBtn.querySelector('span:last-child').textContent = 'PAUSE';
-  pauseBtn.classList.remove('pause-active');
+
+  // Met le bouton en mode PLAY
+  pauseBtn.querySelector('.icon').textContent = '▶';
+  pauseBtn.querySelector('span:last-child').textContent = 'PLAY';
+  pauseBtn.classList.add('pause-active');
+
   buildRows();
   updateHUD();
+
+  // On relance juste le rendu, pas l'avancement
   state.animFrameId = requestAnimationFrame(loop);
 }
 
