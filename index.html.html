@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0d0d14">
+<title>Freestyle Rap Grid</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d14;
+    --surface: #16161f;
+    --surface2: #1e1e2a;
+    --border: #2a2a3a;
+    --text: #f0f0f8;
+    --muted: #555570;
+    --cursor: #ffd23f;
+    --cursor-glow: rgba(255,210,63,0.3);
+    --c0: #3dba6e;
+    --c1: #4a85d4;
+    --c2: #e06060;
+    --c3: #c8962a;
+    --c4: #9060c8;
+    --c5: #2ab8b8;
+    --c6: #d47840;
+    --c7: #b84090;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+  }
+
+  /* ========== SPLASH SCREEN ========== */
+  #splash {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 32px; z-index: 100;
+    padding: 32px;
+  }
+
+  #splash h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 12vw, 72px);
+    letter-spacing: 4px;
+    text-align: center;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--cursor) 0%, #ff9f40 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  #splash p {
+    color: var(--muted);
+    font-size: 15px;
+    text-align: center;
+    max-width: 280px;
+    line-height: 1.6;
+  }
+
+  .bpm-control {
+    display: flex; align-items: center; gap: 20px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 28px;
+  }
+
+  .bpm-btn {
+    background: none; border: none;
+    color: var(--text); font-size: 28px;
+    cursor: pointer; width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px;
+    transition: background 0.15s;
+  }
+  .bpm-btn:active { background: var(--border); }
+
+  #bpm-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--cursor);
+    min-width: 80px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .bpm-label {
+    font-size: 13px; color: var(--muted);
+    text-align: center; margin-top: -6px;
+    letter-spacing: 2px;
+  }
+
+  #start-btn {
+    background: var(--cursor);
+    color: #0d0d14;
+    border: none;
+    border-radius: 14px;
+    padding: 18px 52px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    box-shadow: 0 4px 24px rgba(255,210,63,0.3);
+  }
+  #start-btn:active { transform: scale(0.96); }
+
+  /* ========== GAME SCREEN ========== */
+  #game { display: none; flex-direction: column; height: 100dvh; }
+
+  /* HUD */
+  #hud {
+    display: flex; align-items: center;
+    padding: 10px 14px 6px;
+    gap: 10px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hud-pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .hud-pill span { color: var(--cursor); }
+
+  #target-word {
+    flex: 1;
+    text-align: right;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--cursor);
+    letter-spacing: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* GRID */
+  #grid-container {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    padding: 10px 10px 0;
+  }
+
+  #grid {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    transition: transform 0.28s cubic-bezier(.4,0,.2,1);
+  }
+
+  .grid-row {
+    display: grid;
+    grid-template-columns: 28px 1fr 1fr 1fr 1fr;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .row-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+    padding-right: 2px;
+  }
+
+  .cell {
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    height: 56px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    transition: box-shadow 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cell.has-word {
+    color: var(--text);
+  }
+
+  .cell.is-cursor {
+    border-color: var(--cursor) !important;
+    box-shadow: 0 0 0 2px var(--cursor-glow), 0 0 14px var(--cursor-glow);
+    animation: pulse-cursor 0.9s ease-in-out infinite;
+  }
+
+  @keyframes pulse-cursor {
+    0%, 100% { box-shadow: 0 0 0 2px var(--cursor-glow), 0 0 14px var(--cursor-glow); }
+    50% { box-shadow: 0 0 0 4px var(--cursor-glow), 0 0 24px var(--cursor-glow); }
+  }
+
+  /* ========== CONTROLS BAR ========== */
+  #controls {
+    flex-shrink: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 8px;
+    padding: 8px 10px 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .ctrl-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 14px 8px;
+    cursor: pointer;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 3px;
+    transition: background 0.1s, transform 0.1s;
+    line-height: 1;
+  }
+
+  .ctrl-btn:active { background: var(--border); transform: scale(0.95); }
+
+  .ctrl-btn .icon { font-size: 20px; }
+  .ctrl-btn.pause-active { border-color: var(--cursor); color: var(--cursor); }
+
+  /* ========== BEAT INDICATOR ========== */
+  #beat-bar {
+    height: 3px;
+    background: var(--border);
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #beat-progress {
+    height: 100%;
+    background: var(--cursor);
+    width: 0%;
+    transition: width linear;
+  }
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <h1>FREESTYLE<br>RAP GRID</h1>
+  <p>Choisis ton BPM et rappé sur les rimes qui défilent</p>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+    <div class="bpm-control">
+      <button class="bpm-btn" id="bpm-down">−</button>
+      <div>
+        <div id="bpm-display">90</div>
+        <div class="bpm-label">BPM</div>
+      </div>
+      <button class="bpm-btn" id="bpm-up">＋</button>
+    </div>
+  </div>
+
+  <button id="start-btn">LANCER</button>
+</div>
+
+<!-- GAME -->
+<div id="game">
+  <div id="beat-bar"><div id="beat-progress"></div></div>
+
+  <div id="hud">
+    <div class="hud-pill">BPM <span id="hud-bpm">90</span></div>
+    <div class="hud-pill">L.<span id="hud-row">1</span></div>
+    <div class="hud-pill"><span id="hud-beat">1</span>/4</div>
+    <div id="target-word">—</div>
+  </div>
+
+  <div id="grid-container">
+    <div id="grid"></div>
+  </div>
+
+  <div id="controls">
+    <button class="ctrl-btn" id="btn-pause">
+      <span class="icon">⏸</span>
+      <span>PAUSE</span>
+    </button>
+    <button class="ctrl-btn" id="btn-bpm-down">
+      <span class="icon">🐢</span>
+      <span>−5 BPM</span>
+    </button>
+    <button class="ctrl-btn" id="btn-bpm-up">
+      <span class="icon">🐇</span>
+      <span>+5 BPM</span>
+    </button>
+    <button class="ctrl-btn" id="btn-reset">
+      <span class="icon">↺</span>
+      <span>RESET</span>
+    </button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DONNÉES RIMES
+// ============================================================
+const RHYME_GROUPS = [
+  {syllables:1,key:"oi",words:["moi","toi","soi","voix","fois","choix"]},
+  {syllables:1,key:"ui",words:["nuit","bruit","pluie","fruit","lui","puits"]},
+  {syllables:1,key:"an",words:["temps","sens","dent","camp","champ","rang","sang","vent"]},
+  {syllables:1,key:"on",words:["non","bon","son","don","long","rond","ton","fond"]},
+  {syllables:1,key:"our",words:["jour","tour","cour","four","pour","court"]},
+  {syllables:1,key:"eur",words:["peur","cœur","sœur","heure","leur","meurs"]},
+  {syllables:2,key:"age",words:["courage","image","page","nage","plage","ouvrage","voyage","passage","visage","message","nuage","village"]},
+  {syllables:2,key:"aison",words:["maison","raison","saison","prison","poison","cloison","liaison","trahison"]},
+  {syllables:2,key:"ance",words:["chance","avance","danse","enfance","puissance","distance","naissance","errance","confiance","importance"]},
+  {syllables:2,key:"ence",words:["présence","absence","essence","patience","science","violence","silence","influence"]},
+  {syllables:2,key:"eau",words:["cadeau","rideau","niveau","réseau","bateau","gâteau","manteau","château","radeau","berceau"]},
+  {syllables:2,key:"our2",words:["amour","retour","détour","séjour","secours","discours","parcours","contour","toujours","velours"]},
+  {syllables:2,key:"eur2",words:["chaleur","douleur","couleur","lueur","saveur","valeur","bonheur","malheur","douceur","humeur"]},
+  {syllables:2,key:"esse",words:["jeunesse","tristesse","richesse","sagesse","faiblesse","promesse","largesse","tendresse"]},
+  {syllables:2,key:"oire",words:["histoire","victoire","mémoire","grimoire","déboire","notoire","espoir","bonsoir"]},
+  {syllables:2,key:"ique",words:["musique","logique","magique","pratique","physique","technique","classique","toxique"]},
+  {syllables:2,key:"able",words:["capable","coupable","durable","valable","notable","stable","aimable","portable"]},
+  {syllables:2,key:"une",words:["fortune","lacune","rancune","tribune","commune","chacune"]},
+  {syllables:2,key:"ine",words:["routine","cuisine","usine","machine","piscine","vitrine","colline","cousine"]},
+  {syllables:2,key:"ime",words:["rime","crime","victime","estime","abîme","régime","maxime","intime"]},
+  {syllables:2,key:"ace",words:["menace","audace","grimace","palace","rapace","tenace","surface","face","place","trace"]},
+  {syllables:2,key:"aire",words:["salaire","solaire","notaire","libraire","repaire","calvaire","affaire","primaire"]},
+  {syllables:2,key:"ière",words:["lumière","poussière","prière","manière","derrière","barrière","matière","rivière","frontière","carrière"]},
+  {syllables:2,key:"elle",words:["rebelle","querelle","ficelle","ruelle","nacelle","semelle","belle","nouvelle"]},
+  {syllables:2,key:"ête",words:["tempête","défaite","requête","comète","secrète","discrète","tête","fête","quête","bête"]},
+  {syllables:2,key:"ard",words:["regard","hasard","départ","retard","placard","brouillard","canard","pétard"]},
+  {syllables:2,key:"oir",words:["pouvoir","devoir","vouloir","savoir","revoir","miroir","trottoir","couloir"]},
+  {syllables:2,key:"ir",words:["finir","partir","dormir","sentir","choisir","grandir","sortir","mentir"]},
+  {syllables:2,key:"er",words:["parler","laisser","penser","changer","marcher","tomber","donner","trouver","rêver","aimer"]},
+  {syllables:2,key:"ité",words:["cité","idée","pitié","moitié","fierté","clarté","santé","bonté"]},
+  {syllables:2,key:"ant",words:["enfant","moment","vivant","présent","absent","courant","constant","distant"]},
+  {syllables:2,key:"ain",words:["matin","chemin","destin","copain","demain","humain","terrain","refrain"]},
+  {syllables:2,key:"al",words:["signal","final","banal","normal","journal","local","global","brutal"]},
+  {syllables:2,key:"ise",words:["surprise","maîtrise","valise","crise","église","bêtise","prise","mise","brise","emprise"]},
+  {syllables:2,key:"ire",words:["dire","rire","sourire","délire","empire","aspire","conspire","transpire"]},
+  {syllables:2,key:"ure",words:["mesure","figure","nature","voiture","lecture","écriture","blessure","morsure","brisure","fissure"]},
+  {syllables:2,key:"ée",words:["idée","journée","année","matinée","soirée","destinée","équipée","dictée"]},
+  {syllables:2,key:"eux",words:["deux","feux","lieux","milieux","peux","veux","jeux","vœux","heureux","peureux"]},
+  {syllables:2,key:"ose",words:["chose","pose","repose","cause","pause","rose","close"]},
+  {syllables:2,key:"onde",words:["monde","seconde","ronde","onde","profonde","fronde"]},
+  {syllables:2,key:"eille",words:["oreille","veille","merveille","bouteille","abeille","réveil","soleil","conseil","sommeil","pareil"]},
+  {syllables:3,key:"venir",words:["avenir","souvenir","devenir","revenir","parvenir","prévenir","intervenir"]},
+  {syllables:3,key:"itude",words:["solitude","habitude","attitude","aptitude","certitude","gratitude","lassitude"]},
+  {syllables:3,key:"tion",words:["émotion","notion","potion","promotion","relation","création","nation","formation"]},
+  {syllables:3,key:"ement",words:["mouvement","sentiment","jugement","battement","changement","classement","tourment"]},
+  {syllables:3,key:"onie",words:["harmonie","ironie","colonie","symphonie","agonie","insomnie"]},
+];
+
+const PALETTE = ["#3dba6e","#4a85d4","#e06060","#c8962a","#9060c8","#2ab8b8","#d47840","#b84090"];
+const COLS = 4;
+const VISIBLE_ROWS = 7;
+
+// ============================================================
+// GAME STATE
+// ============================================================
+let state = {
+  bpm: 90,
+  rows: [],
+  rowIdx: 0,
+  colIdx: 0,
+  running: false,
+  groupBags: [],
+  groupUsage: [],
+  recentGroups: [],
+  lastBeatTime: 0,
+  animFrameId: null,
+};
+
+function beatInterval() { return 60000 / state.bpm; }
+
+function refillBag(g) {
+  const words = [...RHYME_GROUPS[g].words];
+  for (let i = words.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [words[i], words[j]] = [words[j], words[i]];
+  }
+  state.groupBags[g].push(...words);
+}
+
+function pickDistinctWords(g, n) {
+  const chosen = [], seen = new Set();
+  while (chosen.length < n) {
+    if (!state.groupBags[g].length) refillBag(g);
+    const w = state.groupBags[g].pop();
+    if (!seen.has(w)) { chosen.push(w); seen.add(w); }
+  }
+  return chosen;
+}
+
+function chooseGroup() {
+  const recent = new Set(state.recentGroups.slice(-12));
+  let candidates = RHYME_GROUPS.map((_, i) => i).filter(i => !recent.has(i));
+  if (!candidates.length) candidates = RHYME_GROUPS.map((_, i) => i);
+  const weights = candidates.map(i => 1 / (1 + state.groupUsage[i]));
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = Math.random() * total;
+  for (let k = 0; k < candidates.length; k++) {
+    r -= weights[k];
+    if (r <= 0) {
+      const g = candidates[k];
+      state.groupUsage[g]++;
+      state.recentGroups.push(g);
+      return g;
+    }
+  }
+  return candidates[candidates.length - 1];
+}
+
+function helperWord(g, forbidden, rowIdx) {
+  const forbiddenSet = new Set([forbidden]);
+  if (rowIdx > 0) {
+    forbiddenSet.add(state.rows[rowIdx - 1].word4);
+    if (state.rows[rowIdx - 1].word2) forbiddenSet.add(state.rows[rowIdx - 1].word2);
+  }
+  let available = RHYME_GROUPS[g].words.filter(w => !forbiddenSet.has(w));
+  if (!available.length) available = RHYME_GROUPS[g].words.filter(w => w !== forbidden);
+  if (!available.length) return null;
+  return available[Math.floor(Math.random() * available.length)];
+}
+
+function generateBlock() {
+  const blockLen = Math.random() < 0.30 ? 4 : 2;
+  const g = chooseGroup();
+  const color = PALETTE[g % PALETTE.length];
+  const words4 = pickDistinctWords(g, blockLen);
+  for (const w4 of words4) {
+    const rowIdx = state.rows.length;
+    const w2 = Math.random() < 0.25 ? helperWord(g, w4, rowIdx) : null;
+    state.rows.push({ word2: w2, word4: w4, group: g, color, key: RHYME_GROUPS[g].key });
+  }
+}
+
+function ensureRows(n) {
+  while (state.rows.length < n) generateBlock();
+}
+
+function initState() {
+  state.rows = [];
+  state.rowIdx = 0;
+  state.colIdx = 0;
+  state.groupBags = RHYME_GROUPS.map(() => []);
+  state.groupUsage = RHYME_GROUPS.map(() => 0);
+  state.recentGroups = [];
+  ensureRows(24);
+}
+
+// ============================================================
+// RENDERING
+// ============================================================
+const gridEl = document.getElementById('grid');
+const hudBpm = document.getElementById('hud-bpm');
+const hudRow = document.getElementById('hud-row');
+const hudBeat = document.getElementById('hud-beat');
+const targetWord = document.getElementById('target-word');
+const beatProgress = document.getElementById('beat-progress');
+
+let renderedRows = 0;
+let renderedRowIdx = -1;
+let renderedColIdx = -1;
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function lighten(hex, amt) {
+  const r = Math.min(255, parseInt(hex.slice(1,3),16) + amt);
+  const g = Math.min(255, parseInt(hex.slice(3,5),16) + amt);
+  const b = Math.min(255, parseInt(hex.slice(5,7),16) + amt);
+  return `rgb(${r},${g},${b})`;
+}
+
+function buildRows() {
+  gridEl.innerHTML = '';
+  renderedRows = 0;
+  const startRow = Math.max(0, state.rowIdx - 2);
+  const endRow = startRow + VISIBLE_ROWS;
+  ensureRows(endRow + 4);
+
+  for (let vr = 0; vr < VISIBLE_ROWS; vr++) {
+    const realR = startRow + vr;
+    if (realR >= state.rows.length) break;
+    const row = state.rows[realR];
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'grid-row';
+    rowDiv.dataset.row = realR;
+
+    const numEl = document.createElement('div');
+    numEl.className = 'row-num';
+    numEl.textContent = realR + 1;
+    rowDiv.appendChild(numEl);
+
+    for (let c = 0; c < COLS; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.dataset.col = c;
+
+      if (c === 1 && row.word2) {
+        cell.classList.add('has-word');
+        cell.textContent = row.word2;
+        cell.style.background = hexToRgba(row.color, 0.22);
+        cell.style.borderColor = hexToRgba(row.color, 0.55);
+      } else if (c === 3) {
+        cell.classList.add('has-word');
+        cell.textContent = row.word4;
+        cell.style.background = hexToRgba(row.color, 0.45);
+        cell.style.borderColor = row.color;
+      }
+
+      if (realR === state.rowIdx && c === state.colIdx) {
+        cell.classList.add('is-cursor');
+      }
+
+      rowDiv.appendChild(cell);
+    }
+    gridEl.appendChild(rowDiv);
+    renderedRows++;
+  }
+
+  renderedRowIdx = state.rowIdx;
+  renderedColIdx = state.colIdx;
+  updateScroll();
+}
+
+function updateCursorOnly() {
+  // Remove old cursor
+  const old = gridEl.querySelector('.is-cursor');
+  if (old) old.classList.remove('is-cursor');
+
+  // Find new cursor cell
+  const startRow = Math.max(0, state.rowIdx - 2);
+  const vr = state.rowIdx - startRow;
+  const rowDivs = gridEl.querySelectorAll('.grid-row');
+  if (rowDivs[vr]) {
+    const cells = rowDivs[vr].querySelectorAll('.cell');
+    if (cells[state.colIdx]) cells[state.colIdx].classList.add('is-cursor');
+  }
+  renderedColIdx = state.colIdx;
+}
+
+function updateScroll() {
+  const startRow = Math.max(0, state.rowIdx - 2);
+  // Nothing to scroll since we rebuild, just update HUD
+}
+
+function updateHUD() {
+  const cur = state.rows[state.rowIdx];
+  hudBpm.textContent = state.bpm;
+  hudRow.textContent = state.rowIdx + 1;
+  hudBeat.textContent = state.colIdx + 1;
+  targetWord.textContent = cur ? cur.word4 : '—';
+}
+
+function render() {
+  const startRow = Math.max(0, state.rowIdx - 2);
+  const prevStart = Math.max(0, renderedRowIdx - 2);
+
+  if (renderedRowIdx !== state.rowIdx || startRow !== prevStart) {
+    buildRows();
+  } else if (renderedColIdx !== state.colIdx) {
+    updateCursorOnly();
+  }
+  updateHUD();
+}
+
+// ============================================================
+// BEAT PROGRESS BAR
+// ============================================================
+let progressStart = 0;
+function animateProgress(now) {
+  if (!state.running) {
+    beatProgress.style.width = '0%';
+    beatProgress.style.transition = 'none';
+    return;
+  }
+  const elapsed = now - state.lastBeatTime;
+  const bi = beatInterval();
+  const pct = Math.min(100, (elapsed / bi) * 100);
+  beatProgress.style.transition = 'none';
+  beatProgress.style.width = pct + '%';
+}
+
+// ============================================================
+// GAME LOOP
+// ============================================================
+function advance() {
+  state.colIdx++;
+  if (state.colIdx >= COLS) {
+    state.colIdx = 0;
+    state.rowIdx++;
+    ensureRows(state.rowIdx + 24);
+  }
+}
+
+function loop(now) {
+  if (state.running) {
+    const bi = beatInterval();
+    if (now - state.lastBeatTime >= bi) {
+      state.lastBeatTime += bi;
+      if (state.lastBeatTime < now - bi * 2) state.lastBeatTime = now;
+      advance();
+    }
+    animateProgress(now);
+  }
+  render();
+  state.animFrameId = requestAnimationFrame(loop);
+}
+
+// ============================================================
+// CONTROLS
+// ============================================================
+const pauseBtn = document.getElementById('btn-pause');
+
+function togglePause() {
+  state.running = !state.running;
+  if (state.running) state.lastBeatTime = performance.now();
+  pauseBtn.querySelector('.icon').textContent = state.running ? '⏸' : '▶';
+  pauseBtn.querySelector('span:last-child').textContent = state.running ? 'PAUSE' : 'PLAY';
+  pauseBtn.classList.toggle('pause-active', !state.running);
+}
+
+function changeBpm(delta) {
+  state.bpm = Math.max(30, Math.min(240, state.bpm + delta));
+  updateHUD();
+}
+
+function resetGame() {
+  if (state.animFrameId) cancelAnimationFrame(state.animFrameId);
+  initState();
+  state.running = true;
+  state.lastBeatTime = performance.now();
+  pauseBtn.querySelector('.icon').textContent = '⏸';
+  pauseBtn.querySelector('span:last-child').textContent = 'PAUSE';
+  pauseBtn.classList.remove('pause-active');
+  buildRows();
+  updateHUD();
+  state.animFrameId = requestAnimationFrame(loop);
+}
+
+document.getElementById('btn-pause').addEventListener('click', togglePause);
+document.getElementById('btn-bpm-down').addEventListener('click', () => changeBpm(-5));
+document.getElementById('btn-bpm-up').addEventListener('click', () => changeBpm(+5));
+document.getElementById('btn-reset').addEventListener('click', resetGame);
+
+// ============================================================
+// SPLASH
+// ============================================================
+let splashBpm = 90;
+const bpmDisplay = document.getElementById('bpm-display');
+
+document.getElementById('bpm-up').addEventListener('click', () => {
+  splashBpm = Math.min(240, splashBpm + 5);
+  bpmDisplay.textContent = splashBpm;
+});
+document.getElementById('bpm-down').addEventListener('click', () => {
+  splashBpm = Math.max(30, splashBpm - 5);
+  bpmDisplay.textContent = splashBpm;
+});
+
+document.getElementById('start-btn').addEventListener('click', () => {
+  state.bpm = splashBpm;
+  document.getElementById('splash').style.display = 'none';
+  document.getElementById('game').style.display = 'flex';
+  initState();
+  state.running = true;
+  state.lastBeatTime = performance.now();
+  buildRows();
+  updateHUD();
+  state.animFrameId = requestAnimationFrame(loop);
+});
+
+// ============================================================
+// KEYBOARD (desktop compat)
+// ============================================================
+document.addEventListener('keydown', e => {
+  if (!state.running && e.key !== ' ') return;
+  if (e.key === ' ') { e.preventDefault(); togglePause(); }
+  if (e.key === 'ArrowUp') changeBpm(+5);
+  if (e.key === 'ArrowDown') changeBpm(-5);
+  if (e.key === 'r' || e.key === 'R') resetGame();
+});
+</script>
+</body>
+</html>
