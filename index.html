@@ -342,7 +342,7 @@
   #controls {
     flex-shrink: 0;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 8px;
     padding: 8px 10px 12px;
     border-top: 1px solid var(--border);
@@ -460,6 +460,10 @@
     <button class="ctrl-btn" id="btn-home" type="button">
       <span class="icon">⌂</span>
       <span>ACCUEIL</span>
+    </button>
+    <button class="ctrl-btn" id="btn-mute" type="button">
+      <span class="icon">🔇</span>
+      <span>MUTE</span>
     </button>
   </div>
 </div>
@@ -993,7 +997,8 @@ const state = {
     master: null,
     noiseBuffer: null,
     schedulerId: null,
-    nextBarTime: 0
+    nextBarTime: 0,
+    muted: false
   }
 };
 
@@ -1013,7 +1018,7 @@ function ensureAudio() {
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     state.audio.ctx = new AudioCtx();
     state.audio.master = state.audio.ctx.createGain();
-    state.audio.master.gain.value = 0.82;
+    state.audio.master.gain.value = state.audio.muted ? 0 : 0.82;
     state.audio.master.connect(state.audio.ctx.destination);
 
     const buffer = state.audio.ctx.createBuffer(1, Math.floor(state.audio.ctx.sampleRate * 0.25), state.audio.ctx.sampleRate);
@@ -1024,6 +1029,27 @@ function ensureAudio() {
     state.audio.noiseBuffer = buffer;
   }
   return state.audio.ctx;
+}
+
+function updateMuteButton() {
+  const btn = document.getElementById("btn-mute");
+  if (!btn) return;
+
+  btn.querySelector(".icon").textContent = state.audio.muted ? "🔊" : "🔇";
+  btn.querySelector("span:last-child").textContent = state.audio.muted ? "UNMUTE" : "MUTE";
+  btn.classList.toggle("pause-active", state.audio.muted);
+}
+
+function toggleMute() {
+  state.audio.muted = !state.audio.muted;
+
+  if (state.audio.master && state.audio.ctx) {
+    const now = state.audio.ctx.currentTime;
+    state.audio.master.gain.cancelScheduledValues(now);
+    state.audio.master.gain.setTargetAtTime(state.audio.muted ? 0 : 0.82, now, 0.01);
+  }
+
+  updateMuteButton();
 }
 
 async function resumeAudioIfNeeded() {
@@ -1484,6 +1510,7 @@ document.getElementById("btn-bpm-down").addEventListener("click", () => changeBp
 document.getElementById("btn-bpm-up").addEventListener("click", () => changeBpm(+5));
 document.getElementById("btn-reset").addEventListener("click", resetCurrentMode);
 document.getElementById("btn-home").addEventListener("click", goHome);
+document.getElementById("btn-mute").addEventListener("click", toggleMute);
 document.addEventListener("keydown", (e) => {
   if (state.activeScreen !== "game") return;
   if (e.key === " ") { e.preventDefault(); togglePause(); }
@@ -1495,6 +1522,7 @@ document.addEventListener("keydown", (e) => {
 document.getElementById("bpm-display").textContent = state.bpm;
 setMode("rimes");
 setPlayButton(false);
+updateMuteButton();
 </script>
 </body>
 </html>
