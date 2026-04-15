@@ -721,6 +721,47 @@ function hat(at) {
   noise.stop(at + 0.05);
 }
 
+
+function bigBoom(at) {
+  const ctx = ensureAudio();
+
+  // Grave principal
+  const sub = ctx.createOscillator();
+  const subGain = ctx.createGain();
+  sub.type = "sine";
+  sub.frequency.setValueAtTime(95, at);
+  sub.frequency.exponentialRampToValueAtTime(38, at + 0.28);
+
+  subGain.gain.setValueAtTime(0.0001, at);
+  subGain.gain.exponentialRampToValueAtTime(1.4, at + 0.002);
+  subGain.gain.exponentialRampToValueAtTime(0.0001, at + 0.42);
+
+  sub.connect(subGain);
+  subGain.connect(state.audio.master);
+
+  // Attaque un peu sale
+  const click = ctx.createBufferSource();
+  click.buffer = state.audio.noiseBuffer;
+
+  const clickFilter = ctx.createBiquadFilter();
+  clickFilter.type = "lowpass";
+  clickFilter.frequency.setValueAtTime(900, at);
+
+  const clickGain = ctx.createGain();
+  clickGain.gain.setValueAtTime(0.0001, at);
+  clickGain.gain.exponentialRampToValueAtTime(0.28, at + 0.001);
+  clickGain.gain.exponentialRampToValueAtTime(0.0001, at + 0.06);
+
+  click.connect(clickFilter);
+  clickFilter.connect(clickGain);
+  clickGain.connect(state.audio.master);
+
+  sub.start(at);
+  sub.stop(at + 0.45);
+  click.start(at);
+  click.stop(at + 0.07);
+}
+
 function scheduleOneBar(barStartTime, bpm) {
   const beat = 60 / bpm;
 
@@ -735,6 +776,9 @@ function scheduleOneBar(barStartTime, bpm) {
   hat(barStartTime + 1.5 * beat);
   hat(barStartTime + 2.5 * beat);
   hat(barStartTime + 3.5 * beat);
+
+  // énorme BOUM juste avant la mesure suivante
+  bigBoom(barStartTime + 4 * beat - 0.035);
 }
 
 function audioSchedulerTick() {
