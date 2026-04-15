@@ -590,6 +590,81 @@ const state = {
   declencheurs: { theme: "", triggers: [], cycleBeat: 0, recentThemes: [], recentTriggers: [] }
 };
 
+  let audioCtx = null;
+let beatSoundStep = 0;
+
+// Pattern : boum tchak boum boum tchak
+const DRUM_PATTERN = ["kick", "snare", "kick", "kick", "snare"];
+
+function ensureAudio() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === "suspended") {
+    audioCtx.resume();
+  }
+}
+
+function playKick(time = null) {
+  ensureAudio();
+  const t = time ?? audioCtx.currentTime;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(150, t);
+  osc.frequency.exponentialRampToValueAtTime(45, t + 0.12);
+
+  gain.gain.setValueAtTime(1.0, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start(t);
+  osc.stop(t + 0.13);
+}
+
+function playSnare(time = null) {
+  ensureAudio();
+  const t = time ?? audioCtx.currentTime;
+
+  const bufferSize = audioCtx.sampleRate * 0.2;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = Math.random() * 2 - 1;
+  }
+
+  const noise = audioCtx.createBufferSource();
+  noise.buffer = buffer;
+
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = "highpass";
+  filter.frequency.setValueAtTime(1800, t);
+
+  const gain = audioCtx.createGain();
+  gain.gain.setValueAtTime(0.55, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.11);
+
+  noise.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  noise.start(t);
+  noise.stop(t + 0.12);
+}
+
+function playPatternStep() {
+  const sound = DRUM_PATTERN[beatSoundStep % DRUM_PATTERN.length];
+  if (sound === "kick") playKick();
+  else playSnare();
+  beatSoundStep++;
+}
+  
+
 function beatInterval() { return 60000 / state.bpm; }
 function sampleOne(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 function shuffle(arr) {
@@ -819,12 +894,16 @@ function startSelectedMode() {
   state.activeScreen = "game";
   state.running = false;
   state.lastBeatTime = performance.now();
+  beatSoundStep = 0;
+
   if (state.selectedMode === "rimes") initRimes();
   else initDeclencheurs();
+
   document.getElementById("splash").style.display = "none";
   document.getElementById("game").style.display = "flex";
   setPlayButton(false);
   render();
+
   if (!state.animFrameId) state.animFrameId = requestAnimationFrame(loop);
 }
 function goHome() {
@@ -836,8 +915,17 @@ function goHome() {
 }
 function togglePause() {
   if (state.activeScreen !== "game") return;
+
   state.running = !state.running;
-  if (state.running) state.lastBeatTime = performance.now();
+
+  if (state.running) {
+    ensureAudio();
+    state.lastBeatTime = performance.now();
+
+    // Lance le son immédiatement quand on appuie sur PLAY
+    playPatternStep();
+  }
+
   setPlayButton(state.running);
 }
 function changeBpm(delta) {
@@ -848,21 +936,33 @@ function changeBpm(delta) {
 function resetCurrentMode() {
   if (state.selectedMode === "rimes") initRimes();
   else initDeclencheurs();
+
   state.running = false;
   state.lastBeatTime = performance.now();
+  beatSoundStep = 0;
+
   setPlayButton(false);
   render();
 }
+  
 function loop(now) {
   if (state.activeScreen === "game" && state.running) {
     const bi = beatInterval();
+
     if (now - state.lastBeatTime >= bi) {
       state.lastBeatTime += bi;
-      if (state.lastBeatTime < now - bi * 2) state.lastBeatTime = now;
+
+      if (state.lastBeatTime < now - bi * 2) {
+        state.lastBeatTime = now;
+      }
+
+      playPatternStep();
+
       if (state.selectedMode === "rimes") advanceRimes();
       else advanceDeclencheurs();
     }
   }
+
   if (state.activeScreen === "game") render();
   state.animFrameId = requestAnimationFrame(loop);
 }
