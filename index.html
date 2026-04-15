@@ -587,83 +587,16 @@ const state = {
   lastBeatTime: 0,
   animFrameId: null,
   rimes: { rows: [], rowIdx: 0, colIdx: 0, groupBags: [], groupUsage: [], recentGroups: [] },
-  declencheurs: { theme: "", triggers: [], cycleBeat: 0, recentThemes: [], recentTriggers: [] }
+  declencheurs: { theme: "", triggers: [], cycleBeat: 0, recentThemes: [], recentTriggers: [] },
+  audio: {
+    ctx: null,
+    master: null,
+    noiseBuffer: null,
+    schedulerId: null,
+    nextBarTime: 0
+  }
 };
 
-let audioCtx = null;
-let beatSoundStep = 0;
-
-// Pattern : boum tchak boum boum tchak
-const DRUM_PATTERN = ["kick", "snare", "kick", "kick", "snare"];
-
-function ensureAudio() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  if (audioCtx.state === "suspended") {
-    audioCtx.resume();
-  }
-}
-
-function playKick(time = null) {
-  ensureAudio();
-  const t = time ?? audioCtx.currentTime;
-
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(150, t);
-  osc.frequency.exponentialRampToValueAtTime(45, t + 0.12);
-
-  gain.gain.setValueAtTime(1.0, t);
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  osc.start(t);
-  osc.stop(t + 0.13);
-}
-
-function playSnare(time = null) {
-  ensureAudio();
-  const t = time ?? audioCtx.currentTime;
-
-  const bufferSize = audioCtx.sampleRate * 0.2;
-  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-  const data = buffer.getChannelData(0);
-
-  for (let i = 0; i < bufferSize; i++) {
-    data[i] = Math.random() * 2 - 1;
-  }
-
-  const noise = audioCtx.createBufferSource();
-  noise.buffer = buffer;
-
-  const filter = audioCtx.createBiquadFilter();
-  filter.type = "highpass";
-  filter.frequency.setValueAtTime(1800, t);
-
-  const gain = audioCtx.createGain();
-  gain.gain.setValueAtTime(0.55, t);
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.11);
-
-  noise.connect(filter);
-  filter.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  noise.start(t);
-  noise.stop(t + 0.12);
-}
-
-function playPatternStep() {
-  const sound = DRUM_PATTERN[beatSoundStep % DRUM_PATTERN.length];
-  if (sound === "kick") playKick();
-  else playSnare();
-  beatSoundStep++;
-}
-  
 function beatInterval() { return 60000 / state.bpm; }
 function sampleOne(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 function shuffle(arr) {
@@ -673,6 +606,155 @@ function shuffle(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+function ensureAudio() {
+  if (!state.audio.ctx) {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    state.audio.ctx = new AudioCtx();
+    state.audio.master = state.audio.ctx.createGain();
+    state.audio.master.gain.value = 0.82;
+    state.audio.master.connect(state.audio.ctx.destination);
+
+    const buffer = state.audio.ctx.createBuffer(1, Math.floor(state.audio.ctx.sampleRate * 0.25), state.audio.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+    state.audio.noiseBuffer = buffer;
+  }
+  return state.audio.ctx;
+}
+
+async function resumeAudioIfNeeded() {
+  const ctx = ensureAudio();
+  if (ctx.state === "suspended") {
+    await ctx.resume();
+  }
+  return ctx;
+}
+
+function stopAudioScheduler() {
+  if (state.audio.schedulerId) {
+    clearInterval(state.audio.schedulerId);
+    state.audio.schedulerId = null;
+  }
+}
+
+function kick(at) {
+  const ctx = ensureAudio();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(150, at);
+  osc.frequency.exponentialRampToValueAtTime(48, at + 0.12);
+
+  gain.gain.setValueAtTime(0.0001, at);
+  gain.gain.exponentialRampToValueAtTime(1.0, at + 0.002);
+  gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.18);
+
+  osc.connect(gain);
+  gain.connect(state.audio.master);
+
+  osc.start(at);
+  osc.stop(at + 0.2);
+}
+
+function snare(at) {
+  const ctx = ensureAudio();
+
+  const noise = ctx.createBufferSource();
+  noise.buffer = state.audio.noiseBuffer;
+
+  const noiseFilter = ctx.createBiquadFilter();
+  noiseFilter.type = "highpass";
+  noiseFilter.frequency.setValueAtTime(1400, at);
+
+  const noiseGain = ctx.createGain();
+  noiseGain.gain.setValueAtTime(0.0001, at);
+  noiseGain.gain.exponentialRampToValueAtTime(0.75, at + 0.001);
+  noiseGain.gain.exponentialRampToValueAtTime(0.0001, at + 0.12);
+
+  const body = ctx.createOscillator();
+  body.type = "triangle";
+  body.frequency.setValueAtTime(180, at);
+
+  const bodyGain = ctx.createGain();
+  bodyGain.gain.setValueAtTime(0.0001, at);
+  bodyGain.gain.exponentialRampToValueAtTime(0.35, at + 0.001);
+  bodyGain.gain.exponentialRampToValueAtTime(0.0001, at + 0.08);
+
+  noise.connect(noiseFilter);
+  noiseFilter.connect(noiseGain);
+  noiseGain.connect(state.audio.master);
+
+  body.connect(bodyGain);
+  bodyGain.connect(state.audio.master);
+
+  noise.start(at);
+  noise.stop(at + 0.14);
+  body.start(at);
+  body.stop(at + 0.09);
+}
+
+function hat(at) {
+  const ctx = ensureAudio();
+
+  const noise = ctx.createBufferSource();
+  noise.buffer = state.audio.noiseBuffer;
+
+  const filter = ctx.createBiquadFilter();
+  filter.type = "highpass";
+  filter.frequency.setValueAtTime(6500, at);
+
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.0001, at);
+  gain.gain.exponentialRampToValueAtTime(0.18, at + 0.001);
+  gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.045);
+
+  noise.connect(filter);
+  filter.connect(gain);
+  gain.connect(state.audio.master);
+
+  noise.start(at);
+  noise.stop(at + 0.05);
+}
+
+function scheduleOneBar(barStartTime, bpm) {
+  const beat = 60 / bpm;
+
+  kick(barStartTime + 0 * beat);
+  kick(barStartTime + 2 * beat);
+  kick(barStartTime + 2.5 * beat);
+
+  snare(barStartTime + 1 * beat);
+  snare(barStartTime + 3 * beat);
+
+  hat(barStartTime + 0.5 * beat);
+  hat(barStartTime + 1.5 * beat);
+  hat(barStartTime + 2.5 * beat);
+  hat(barStartTime + 3.5 * beat);
+}
+
+function audioSchedulerTick() {
+  if (!state.running) return;
+  const ctx = state.audio.ctx;
+  if (!ctx) return;
+
+  const lookAhead = 0.12;
+  while (state.audio.nextBarTime < ctx.currentTime + lookAhead) {
+    scheduleOneBar(state.audio.nextBarTime, state.bpm);
+    state.audio.nextBarTime += 4 * (60 / state.bpm);
+  }
+}
+
+async function startAudioScheduler() {
+  const ctx = await resumeAudioIfNeeded();
+  stopAudioScheduler();
+  state.audio.nextBarTime = ctx.currentTime + 0.05;
+  audioSchedulerTick();
+  state.audio.schedulerId = setInterval(audioSchedulerTick, 25);
 }
 function setMode(mode) {
   state.selectedMode = mode;
@@ -892,40 +974,33 @@ function setPlayButton(isRunning) {
 function startSelectedMode() {
   state.activeScreen = "game";
   state.running = false;
+  stopAudioScheduler();
   state.lastBeatTime = performance.now();
-  beatSoundStep = 0;
-
   if (state.selectedMode === "rimes") initRimes();
   else initDeclencheurs();
-
   document.getElementById("splash").style.display = "none";
   document.getElementById("game").style.display = "flex";
   setPlayButton(false);
   render();
-
   if (!state.animFrameId) state.animFrameId = requestAnimationFrame(loop);
 }
-  
 function goHome() {
   state.activeScreen = "splash";
   state.running = false;
+  stopAudioScheduler();
   document.getElementById("game").style.display = "none";
   document.getElementById("splash").style.display = "flex";
   setPlayButton(false);
 }
-function togglePause() {
+async function togglePause() {
   if (state.activeScreen !== "game") return;
-
   state.running = !state.running;
-
   if (state.running) {
-    ensureAudio();
     state.lastBeatTime = performance.now();
-
-    // Lance le son immédiatement quand on appuie sur PLAY
-    playPatternStep();
+    await startAudioScheduler();
+  } else {
+    stopAudioScheduler();
   }
-
   setPlayButton(state.running);
 }
 function changeBpm(delta) {
@@ -936,33 +1011,22 @@ function changeBpm(delta) {
 function resetCurrentMode() {
   if (state.selectedMode === "rimes") initRimes();
   else initDeclencheurs();
-
   state.running = false;
+  stopAudioScheduler();
   state.lastBeatTime = performance.now();
-  beatSoundStep = 0;
-
   setPlayButton(false);
   render();
 }
-  
 function loop(now) {
   if (state.activeScreen === "game" && state.running) {
     const bi = beatInterval();
-
     if (now - state.lastBeatTime >= bi) {
       state.lastBeatTime += bi;
-
-      if (state.lastBeatTime < now - bi * 2) {
-        state.lastBeatTime = now;
-      }
-
-      playPatternStep();
-
+      if (state.lastBeatTime < now - bi * 2) state.lastBeatTime = now;
       if (state.selectedMode === "rimes") advanceRimes();
       else advanceDeclencheurs();
     }
   }
-
   if (state.activeScreen === "game") render();
   state.animFrameId = requestAnimationFrame(loop);
 }
